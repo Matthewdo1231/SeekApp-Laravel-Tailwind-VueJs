@@ -13,19 +13,19 @@ return new class extends Migration
     {
         Schema::create('joblisting', function (Blueprint $table) {
             $table->id();
-            $table->string('hashId');
-            $table->string('jobtitle');
-            $table->string('companyname');
-            $table->string('jobaddress');
-            $table->string('jobtype');
-            $table->string('salary');
-            $table->string('role');
-            $table->string('niche');
-            $table->string('reviews');
-            $table->longText('about');
-            $table->longText('aboutRole');
-            $table->longText('requirements');
-            $table->longText('benefits');
+            $table->string('hashId')->nullable();
+            $table->string('jobtitle')->nullable();
+            $table->string('companyname')->nullable();
+            $table->string('jobaddress')->nullable();
+            $table->string('jobtype')->nullable();
+            $table->string('salary')->nullable();
+            $table->string('role')->nullable();
+            $table->string('niche')->nullable();
+            $table->string('reviews')->nullable();
+            $table->longText('about')->nullable();
+            $table->longText('aboutRole')->nullable();
+            $table->longText('requirements')->nullable();
+            $table->longText('benefits')->nullable();
             $table->timestamps();
         });
     }

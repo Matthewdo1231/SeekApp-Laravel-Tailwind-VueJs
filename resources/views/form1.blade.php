@@ -2,11 +2,20 @@
     <!--To add more input create a unique id to input element and it's pen font and them to the same group id-->
 
 @php 
-       $jobtitle = $jobinfos[0]  -> jobtitle;
+     if(count($jobinfos)!=0) {
+       $jobtitle = $jobinfos[0] -> jobtitle;
        $companyname = $jobinfos[0]  -> companyname;
        $jobaddress = $jobinfos[0]  -> jobaddress;
        $jobtype = $jobinfos[0]  -> jobtype;
        $niche = $jobinfos[0]  -> niche;
+     }
+     else{
+       $jobtitle = "";
+       $companyname = "";
+       $jobaddress = "";
+       $jobtype = "";
+       $niche = "";
+     }
 @endphp 
 
 
@@ -128,7 +137,7 @@
 
    //Form asychronous submission ////////////
 
-          const formElem =  document.querySelector('#form1');
+          const formElem = document.querySelector('#form1');
 
           formElem.addEventListener('submit',(event)=>{
            event.preventDefault();
@@ -138,6 +147,7 @@
            fetch(formElem.action,{
             method:'POST',
             headers: {
+                'X-Requested-With': 'XMLHttpRequest',
                 'formNumber': 'form1',
             },
             body:formData,

@@ -1,9 +1,25 @@
 <x-layout>
    <!--To add more input create a unique id to input element and it's pen font and them to the same group id-->
 
+@php 
+ if(count($jobinfos)!=0) {
+      $about = $jobinfos[0]  -> about;
+      $aboutRole = $jobinfos[0]  -> aboutRole;
+      $requirements = $jobinfos[0]  -> requirements;
+      $benefits = $jobinfos[0]  -> benefits;
+     }
+     else{
+      $about = "";
+      $aboutRole = "";
+      $requirements = "";
+      $benefits = "";
+     }
+
+@endphp 
+
+
  
 
-@foreach($jobinfos as $jobinfo)
 
 <form id="form2" method="POST" action="/create" class="flex flex-row justify-center">
    @csrf
@@ -17,26 +33,26 @@
 
     <div class="relative flex flex-col">
        <p class="text-lg mx-48 mt-4">About the Company</p>
-       <input data-group="input" id="jobtitle-input" name="about" value="{{$jobinfo -> about}}" class="mx-48 mt-2 outline-none border-2 rounded-md p-2" placeholder="Edit jobtitle">
-       <i data-group="pen" id="jobtitle-edit-js" class="fa-solid fa-pen absolute right-60 bottom-4 text-md hover:cursor-pointer"></i>
+       <input data-group="input" id="about-input" name="about" value="{{$about}}" class="mx-48 mt-2 outline-none border-2 rounded-md p-2" placeholder="Edit jobtitle">
+       <i data-group="pen" id="about-edit-js" class="fa-solid fa-pen absolute right-60 bottom-4 text-md hover:cursor-pointer"></i>
     </div>
     
     <div class="relative flex flex-col">
        <p class="text-lg mx-48 mt-4">About the Role</p>
-       <input data-group="input" id="companyname-input" name="aboutRole" value="{{$jobinfo -> aboutRole}}"  class="mx-48 mt-2 outline-none border-2 rounded-md p-2" placeholder="Edit jobtitle">
-       <i data-group="pen" id="companyname-edit-js" class="fa-solid fa-pen absolute right-60 bottom-4 text-md hover:cursor-pointer"></i>
+       <input data-group="input" id="aboutRole-input" name="aboutRole" value="{{$aboutRole}}"  class="mx-48 mt-2 outline-none border-2 rounded-md p-2" placeholder="Edit jobtitle">
+       <i data-group="pen" id="aboutRole-edit-js" class="fa-solid fa-pen absolute right-60 bottom-4 text-md hover:cursor-pointer"></i>
     </div>  
 
     <div class="relative flex flex-col">
-       <p class="text-lg mx-48 mt-4">Company Address</p>
-       <input data-group="input" id="jobaddress-input" name="requirements" value="{{$jobinfo -> requirements}}" class="mx-48 mt-2 outline-none border-2 rounded-md p-2" placeholder="Edit jobtitle">
-       <i data-group="pen" id="jobaddress-edit-js" class="fa-solid fa-pen absolute right-60 bottom-4 text-md hover:cursor-pointer"></i>
+       <p class="text-lg mx-48 mt-4">Requirements</p>
+       <input data-group="input" id="requirements-input" name="requirements" value="{{$requirements}}" class="mx-48 mt-2 outline-none border-2 rounded-md p-2" placeholder="Edit jobtitle">
+       <i data-group="pen" id="requirements-edit-js" class="fa-solid fa-pen absolute right-60 bottom-4 text-md hover:cursor-pointer"></i>
     </div>  
 
     <div class="relative flex flex-col">
-       <p class="text-lg mx-48 mt-4">Employement Type</p>
-       <input data-group="input" id="jobtype-input" name="benefits" value="{{$jobinfo -> benefits}}"  class="mx-48 mt-2 outline-none border-2 rounded-md p-2" placeholder="Edit jobtitle">
-       <i data-group="pen" id="jobtype-edit-js" class="fa-solid fa-pen absolute right-60 bottom-4 text-md hover:cursor-pointer"></i>
+       <p class="text-lg mx-48 mt-4">Benefits</p>
+       <input data-group="input" id="benefits-input" name="benefits" value="{{$benefits}}"  class="mx-48 mt-2 outline-none border-2 rounded-md p-2" placeholder="Edit jobtitle">
+       <i data-group="pen" id="benefits-edit-js" class="fa-solid fa-pen absolute right-60 bottom-4 text-md hover:cursor-pointer"></i>
     </div>  
 
      <div class="flex">
@@ -48,7 +64,6 @@
    </div>
 </form>
 
-@endforeach
 </x-layout>
 
 
@@ -56,7 +71,7 @@
 <script>
    //routes to second page//////////////
    document.querySelector('#submit').addEventListener('click',()=>{
-           window.location.href = 'form2';
+           window.location.href = '/employer';
          })
  ///////////////////////////////////////
 
@@ -122,7 +137,7 @@
          const formElem =  document.querySelector('#form2');
 
          formElem.addEventListener('submit',(event)=>{
-           event.preventDefault();
+            event.preventDefault();
 
           let formData = new FormData(formElem);
 
@@ -130,6 +145,7 @@
            method:'POST',
            headers: {
                'X-Requested-With': 'XMLHttpRequest',
+               'formNumber': 'form2',
            },
            body:formData,
           })
