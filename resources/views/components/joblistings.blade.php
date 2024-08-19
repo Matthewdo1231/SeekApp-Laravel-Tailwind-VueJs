@@ -3,7 +3,7 @@
 {{--parent container--}}
 <div class="mt-6 lg:grid lg:grid-cols-[3fr_4fr] lg:max-w-[1280px] lg:mx-auto lg:gap-4"> 
    {{--job listing column container--}}
-  <div class="flex flex-col justify-center mx-6 gap-4 ">
+  <div class="flex flex-col mx-6 gap-4 ">
     
   @foreach($joblistings as $joblisting)
 
@@ -27,15 +27,33 @@
  </div>
 
  <script>
-    
-    document.querySelectorAll('#jobfulldesc-js').forEach(element =>{
-        element.addEventListener('click' , ()=>{
-            let url = new URL(window.location.href);
-            url.searchParams.set('id', element.dataset.jobId);
-            window.location.href = url;
+    jobContainerElem = document.querySelectorAll('#jobfulldesc-js');
+                
+    //redirects using the job Id
+    jobContainerElem.forEach(elem =>{
+        elem.addEventListener('click' , ()=>{
+          let id = elem.getAttribute('data-job-id');
+          fetch('/api/fulljobdesc',{
+            method:'GET',
+            headers:{
+              'id' : id,
+            }
+          }).then(response => response.json())
+            .then(data => console.log(data));
         })
     })
-        
+
+
+   //Inserts outset in the joblisting container
+   jobContainerElem.forEach(elem => {
+        elem.addEventListener('click', ()=>{
+            //removeAllOutset();
+            elem.classList.add('outline', 'outline-4','outline-orange-500' ,'outline-offset-2', 'p-4');
+        })
+   })
+   
+
+
 
 </script>
      
