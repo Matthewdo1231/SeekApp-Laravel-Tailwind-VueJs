@@ -9,4 +9,4 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::get('/fulljobdesc',[FullJobDescriptionController::class,'getJobDescription']);
+Route::get('/fulljobdesc',[FullJobDescriptionController::class,'getJobDescriptionHtml']);

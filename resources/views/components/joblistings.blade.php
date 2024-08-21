@@ -19,41 +19,33 @@
   @endforeach
 
   </div>
-
   {{--job full description column component--}}
     <x-joblistingfulldescription :joblistingFullDesc="$joblistingFullDesc"/>
-
   </div>
+  
  </div>
 
  <script>
-    jobContainerElem = document.querySelectorAll('#jobfulldesc-js');
-                
-    //redirects using the job Id
-    jobContainerElem.forEach(elem =>{
-        elem.addEventListener('click' , ()=>{
-          let id = elem.getAttribute('data-job-id');
-          fetch('/api/fulljobdesc',{
-            method:'GET',
-            headers:{
-              'id' : id,
-            }
-          }).then(response => response.json())
-            .then(data => console.log(data));
-        })
-    })
-
+ 
 
    //Inserts outset in the joblisting container
    jobContainerElem.forEach(elem => {
         elem.addEventListener('click', ()=>{
-            //removeAllOutset();
+            removeAllOutset();
             elem.classList.add('outline', 'outline-4','outline-orange-500' ,'outline-offset-2', 'p-4');
         })
    })
+
+
+   
+  function removeAllOutset(){
+    jobContainerElem.forEach(elem => {
+      elem.classList.remove('outline', 'outline-4','outline-orange-500' ,'outline-offset-2', 'p-4');
+    })
+  }
    
 
-
+  
 
 </script>
      

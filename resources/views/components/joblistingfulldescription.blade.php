@@ -1,6 +1,3 @@
-
-
-
 <div x-init="init()" class="hidden relative min-w-[380px] max-w-[760px] lg:inline">  
     <article id="fullJobDesc" class="flex flex-col">
         @foreach($joblistingFullDesc as $joblisting)
@@ -34,8 +31,6 @@
             <ul class="text-2xl mb-6 text-gray-700">Benefits
                 <li class="text-base ml-4 mb-4 text-gray-700">{{$joblisting -> benefits}}</li>
             </ul>
-
-
           </section>
        @endforeach
     </article>  
@@ -55,5 +50,40 @@
       })
 
     }
+
+    
+    jobContainerElem = document.querySelectorAll('#jobfulldesc-js');
+      //fetch the joblisting using the id in the header
+      jobContainerElem.forEach(elem =>{
+          elem.addEventListener('click' , ()=>{
+     
+            let id = elem.getAttribute('data-job-id');
+
+            //update url without refreshing
+            let currentUrl = new URL(window.location.href);
+            let params = currentUrl.searchParams;
+            params.set('id', id);
+            history.pushState(null, '', currentUrl.toString());
+       
+           
+            fetch('/api/fulljobdesc',{
+              method:'GET',
+              headers:{
+                'id' : id,
+              }
+            }).then(response => response.text())
+              .then(data => renderJobDescContainer(data)) 
+              .catch(error => {
+                  console.error("Error with fetch request:", error);
+              });
+              
+          })
+      })
+      
+  
+      function renderJobDescContainer(data){
+          document.getElementById('fullJobDesc').innerHTML = data;
+      }
+      
 
   </script>
