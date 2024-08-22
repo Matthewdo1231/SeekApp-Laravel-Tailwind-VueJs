@@ -4,7 +4,7 @@
   @if(!empty($joblistings))
   <x-tag/>
   <x-joblistings :joblistings="$joblistings" :joblistingFullDesc="$joblistingFullDesc"/>
-    <div class="mt-6 p-4">
+    <div class="mt-6 container mx-auto p-4">
       {{$joblistings->links('vendor.pagination.tailwind')}}
      </div>
    @else
