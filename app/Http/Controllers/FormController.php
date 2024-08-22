@@ -23,7 +23,7 @@ class FormController extends Controller
     }
 
     public function getForm1Info(){ 
-        $Id = '6832'; //!!!!!!!!!!!!!!! ID MUST BE UNIQUE COMING FROM USER LOGIN SESSION !!!!!!!!!!!!!//
+        $Id = '5999'; //!!!!!!!!!!!!!!! ID MUST BE UNIQUE COMING FROM USER LOGIN SESSION !!!!!!!!!!!!!//
         if(!empty($Id)){
          return PendingForm::select('jobtitle','companyname','requirements','jobaddress','jobtype','niche')->filter($Id)->get();
         }
@@ -41,7 +41,7 @@ class FormController extends Controller
 
 
     public function getForm2Info(){
-        $Id = '6832';
+        $Id = '5999';
             if(!empty($Id)){
             return PendingForm::select('about','aboutRole','requirements','benefits')->filter($Id)->get();
             }
@@ -58,7 +58,7 @@ class FormController extends Controller
     public function store(Request $request){
         //If form submission is coming from form1
        if($request -> header('formNumber') == 'form1'){
-          $Id = '6832'; 
+          $Id = '5999'; 
 
         //If userId do not matches in any column in database create new one else overwrite the existing one
             if(count(self::getForm1Info()) == 0){
@@ -90,12 +90,15 @@ class FormController extends Controller
 
            //If form submission is coming from form2
      if($request -> header('formNumber') == 'form2'){
-            $Id = '6832'; //Id must be unique from user login session
+            
+            $Id = '5999'; //Id must be unique from user login session
+
+            //updates after submission
             PendingForm::where('hashId', $Id)
                 ->update([
                 'about' => $request-> about,
                 'aboutRole' => $request -> aboutRole,
-                'requirements' => $request -> benefits,
+                'requirements' => $request -> benefits, 
                 'benefits' => $request -> benefits,
                 ]);
 
@@ -117,7 +120,7 @@ class FormController extends Controller
             ];
 
             Joblisting::create($joblistingData);
-               
+            PendingForm::where('hashId',$Id) -> delete(); 
      }
   }
     
