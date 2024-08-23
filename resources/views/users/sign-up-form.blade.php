@@ -1,7 +1,6 @@
 <x-layout>
-    <form id="form1" method="POST" action="/create" class="flex flex-row justify-center">
+    <form id="sign-up-seeker" method="POST" action="/user" class="flex flex-row justify-center">
         @csrf
-    
        <div class="flex flex-col mt-32 w-[38rem] bg-gray-100 p-6 rounded-lg"> 
     
          <p class="text-2xl mx-44 font-bold">Sign-up <span class="text-orange-500">as Seeker</span></p>
@@ -23,7 +22,7 @@
 
          <div class="relative flex flex-col">
             <p class="text-lg mx-20 mt-4">Confirm Password</p>
-            <input type="password" data-group="input" id="jobaddress-input" name="password_confirm" value="" class="mt-2 mx-20 outline-none border-2 rounded-md p-2" placeholder="Edit jobtitle">
+            <input type="password" data-group="input" id="jobaddress-input" name="password_confirmation" value="" class="mt-2 mx-20 outline-none border-2 rounded-md p-2" placeholder="Edit jobtitle">
          </div>  
         
           <div class="flex justify-end mt-20">

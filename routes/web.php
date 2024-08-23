@@ -6,10 +6,14 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\JoblistingController;
 use App\Http\Controllers\EmployerSiteController;
 
-//Employer index
+//Seeker index
 Route::get('/', [JoblistingController::class, 'index']);
 
+//Seeker registration view 
 Route::get('/sign-up_seeker', [UserController::class, 'create']);
+
+//Create new Seeker
+Route::post('/user', [UserController::class, 'store']);
 
 //Employer index
 Route::get('/employer', [EmployerSiteController::class, 'index']);
