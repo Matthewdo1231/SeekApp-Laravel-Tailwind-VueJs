@@ -8,21 +8,33 @@
          <div class="relative flex flex-col">
             <p class="text-lg mx-20 mt-4">Name</p>
             <input data-group="input" id="name-input" name="name" value="" class="mt-2 mx-20 outline-none border-2 rounded-md p-2" placeholder="Edit jobtitle">
+            @error('name') 
+              <p class="text-red-500 mx-20">{{$message}}</p>
+            @enderror
          </div>
          
          <div class="relative flex flex-col">
             <p class="text-lg mx-20 mt-4">Email</p>
             <input type="email" data-group="input" id="email-input" name="email" value=""  class="mt-2 mx-20 outline-none border-2 rounded-md p-2" placeholder="Edit jobtitle">
+            @error('email') 
+            <p class="text-red-500 mx-20">{{$message}}</p>
+            @enderror
          </div>  
     
          <div class="relative flex flex-col">
             <p class="text-lg mx-20 mt-4">Password</p>
             <input type="password" data-group="input" id="jobaddress-input" name="password" value="" class="mt-2 mx-20 outline-none border-2 rounded-md p-2" placeholder="Edit jobtitle">
+            @error('pass') 
+              <p class="text-red-500 mx-20">{{$message}}</p>
+            @enderror
          </div>  
 
          <div class="relative flex flex-col">
             <p class="text-lg mx-20 mt-4">Confirm Password</p>
             <input type="password" data-group="input" id="jobaddress-input" name="password_confirmation" value="" class="mt-2 mx-20 outline-none border-2 rounded-md p-2" placeholder="Edit jobtitle">
+            @error('password') 
+            <p class="text-red-500 mx-20">{{$message}}</p>
+          @enderror
          </div>  
         
           <div class="flex justify-end mt-20">
