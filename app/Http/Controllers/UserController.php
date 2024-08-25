@@ -13,6 +13,10 @@ class UserController extends Controller
         return view('users.sign-up-form');
     }
 
+    public function login(){
+        return view('users.login-form');
+    }
+
     public function store(Request $request){
         $formInfos = $request -> validate([
             'name' => ['required','min:6'],
@@ -28,4 +32,35 @@ class UserController extends Controller
 
        return redirect('/');
     }
-}
+
+    public function authenticate(Request $request){
+          $formFields = $request -> validate([
+             'email' => ['required','email'],
+             'password' => 'required',      
+          ]);
+
+          if(Auth::attempt($formFields)){
+             $request -> session() -> regenerate();
+             return redirect('/');
+          };
+
+          return redirect() -> back() -> 
+          withErrors(['password' => 'Your email or password were incorrect']) ->
+          onlyInput('password');
+        }
+
+
+    public function logout(Request $request){
+            Auth::logout();
+            
+            $request -> session() -> invalidate();
+            $request -> session() -> regenerate();
+
+            return redirect('/');
+        }
+    }
+
+
+  
+
+      

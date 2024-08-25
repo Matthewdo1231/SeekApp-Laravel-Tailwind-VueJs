@@ -10,10 +10,19 @@ use App\Http\Controllers\EmployerSiteController;
 Route::get('/', [JoblistingController::class, 'index']);
 
 //Seeker registration view 
-Route::get('/sign-up_seeker', [UserController::class, 'create']);
+Route::get('/sign-up_seeker', [UserController::class, 'create']) ->middleware('guest');
 
 //Create new Seeker
 Route::post('/user', [UserController::class, 'store']);
+
+//Seeker login view 
+Route::get('/login_seeker', [UserController::class, 'login'])->middleware('guest');
+
+//Login User
+Route::post('/user/authenticate', [UserController::class, 'authenticate']);
+
+//Logout seeker
+Route::post('/user/logout', [UserController::class, 'logout']);
 
 //Employer index
 Route::get('/employer', [EmployerSiteController::class, 'index']);
