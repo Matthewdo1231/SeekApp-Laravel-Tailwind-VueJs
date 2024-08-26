@@ -19,5 +19,13 @@
         <i class="fa-solid fa-user-tie absolute text-2xl left-3 top-1 text-gray-600"></i>
         <span class="ml-4 mt-1 text-xl text-gray-500">Applicants</span>
     </button>
+
+    <form method="POST" action="/user/logout" class="group flex gap-4 mr-4 py-8 border-b-2 border-transparent hover:border-orange-500"> 
+        @csrf
+        <i class="fa-solid fa-door-open text-lg md:pt-1 text-gray-500 group-hover:text-orange-500"></i>
+         <button type="submit" class="hidden md:block text-lg text-gray-500 group-hover:text-orange-500">Logout</button>
+       </a>
+      </form>
+    
   
 </nav>

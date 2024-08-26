@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EmployerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\UserController;
@@ -23,6 +24,20 @@ Route::post('/user/authenticate', [UserController::class, 'authenticate']);
 
 //Logout seeker
 Route::post('/user/logout', [UserController::class, 'logout']);
+
+
+//Employer Authentication Routes
+
+Route::prefix('employer')->group(function(){
+    Route::get('/sign-up_employer', [EmployerController::class, 'create'])->middleware('guest');
+    Route::post('/create_employer', [EmployerController::class, 'store']);
+    Route::get('/login_employer', [EmployerController::class, 'login'])->middleware('guest');
+
+    Route::post('/authenticate', [EmployerController::class, 'authenticate']);
+    Route::post('/logout', [EmployerController::class, 'logout']);
+
+});
+
 
 //Employer index
 Route::get('/employer', [EmployerSiteController::class, 'index']);

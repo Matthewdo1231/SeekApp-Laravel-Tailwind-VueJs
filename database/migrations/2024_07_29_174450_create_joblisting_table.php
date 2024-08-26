@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('joblisting', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('employer_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('hashId')->nullable();
             $table->string('jobtitle')->nullable();
             $table->string('companyname')->nullable();
