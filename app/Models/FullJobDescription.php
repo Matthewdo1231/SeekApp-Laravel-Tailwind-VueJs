@@ -11,7 +11,7 @@ class FullJobDescription extends Model
 
     public function scopeFilter($query, $id){
         if(!empty($id)){
-           $query -> where('hashId','=',$id);
+           $query -> where('id','=',$id);
         }
     }
 }

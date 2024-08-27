@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('pendingform', function (Blueprint $table) {
             $table->id();
-            $table->string('hashId')->nullable();
             $table->string('jobtitle')->nullable();
             $table->string('companyname')->nullable();
             $table->string('jobaddress')->nullable();

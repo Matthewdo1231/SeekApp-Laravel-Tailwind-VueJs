@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Joblisting;
 use App\Models\PendingForm;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FormController extends Controller
 {
@@ -23,9 +24,8 @@ class FormController extends Controller
     }
 
     public function getForm1Info(){ 
-        $Id = '5999'; //!!!!!!!!!!!!!!! ID MUST BE UNIQUE COMING FROM USER LOGIN SESSION !!!!!!!!!!!!!//
-        if(!empty($Id)){
-         return PendingForm::select('jobtitle','companyname','requirements','jobaddress','jobtype','niche')->filter($Id)->get();
+        if((Auth::guard('employer')->id())){
+         return PendingForm::select('jobtitle','companyname','requirements','jobaddress','jobtype','niche')->filter(Auth::guard('employer')->id())->get();
         }
         else{
             return collect([(object)[
@@ -41,9 +41,8 @@ class FormController extends Controller
 
 
     public function getForm2Info(){
-        $Id = '5999';
-            if(!empty($Id)){
-            return PendingForm::select('about','aboutRole','requirements','benefits')->filter($Id)->get();
+            if(Auth::guard('employer')->id()){
+            return PendingForm::select('about','aboutRole','requirements','benefits')->filter(Auth::guard('employer')->id())->get();
             }
           else{
             return collect([(object)[
@@ -58,7 +57,6 @@ class FormController extends Controller
     public function store(Request $request){
         //If form submission is coming from form1
        if($request -> header('formNumber') == 'form1'){
-          $Id = '5999'; 
 
         //If userId do not matches in any column in database create new one else overwrite the existing one
             if(count(self::getForm1Info()) == 0){
@@ -70,13 +68,13 @@ class FormController extends Controller
                 'jobtype' => 'required',
                 'niche' => 'required',
             ]);
-            $validatedData['hashId'] = mt_rand(1,10000);       
+            $validatedData['id'] = Auth::guard('employer')->id();     
 
             PendingForm::create($validatedData);
             }
 
             else{
-                PendingForm::where('hashId', $Id)
+                PendingForm::where('id', Auth::guard('employer')->id())
                 ->update([
                 'jobtitle' => $request-> jobtitle,
                 'companyname' => $request -> companyname,
@@ -90,11 +88,9 @@ class FormController extends Controller
 
            //If form submission is coming from form2
      if($request -> header('formNumber') == 'form2'){
-            
-            $Id = '5999'; //Id must be unique from user login session
 
             //updates after submission
-            PendingForm::where('hashId', $Id)
+            PendingForm::where('id', Auth::guard('employer')->id())
                 ->update([
                 'about' => $request-> about,
                 'aboutRole' => $request -> aboutRole,
@@ -105,9 +101,10 @@ class FormController extends Controller
 
         //If request -> header 'button; is equals to  'publish button' then send to joblisting db
             $data = PendingForm::select('jobtitle','companyname','requirements','jobaddress','jobtype','niche','about','aboutRole','requirements','benefits')->
-                    filter($Id)->get();
+                    filter(Auth::guard('employer')->id())->get();
             
             $joblistingData = [
+                'employer_id'=> Auth::guard('employer')->id(),
                 'jobtitle' => $data[0]-> jobtitle,
                 'companyname' => $data[0] -> companyname,
                 'jobaddress' => $data[0]-> jobaddress,
@@ -120,7 +117,7 @@ class FormController extends Controller
             ];
 
             Joblisting::create($joblistingData);
-            PendingForm::where('hashId',$Id) -> delete(); 
+            PendingForm::where('id', Auth::guard('employer')->id()) -> delete(); 
      }
   }
     

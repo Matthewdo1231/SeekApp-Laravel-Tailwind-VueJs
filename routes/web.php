@@ -29,9 +29,9 @@ Route::post('/user/logout', [UserController::class, 'logout']);
 //Employer Authentication Routes
 
 Route::prefix('employer')->group(function(){
-    Route::get('/sign-up_employer', [EmployerController::class, 'create'])->middleware('guest');
+    Route::get('/sign-up_employer', [EmployerController::class, 'create']);
     Route::post('/create_employer', [EmployerController::class, 'store']);
-    Route::get('/login_employer', [EmployerController::class, 'login'])->middleware('guest');
+    Route::get('/login_employer', [EmployerController::class, 'login']);
 
     Route::post('/authenticate', [EmployerController::class, 'authenticate']);
     Route::post('/logout', [EmployerController::class, 'logout']);

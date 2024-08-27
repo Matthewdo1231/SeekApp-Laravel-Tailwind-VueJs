@@ -26,6 +26,6 @@ class JoblistingController extends Controller
 
   public static function getSearchJobs($request){
      if(!empty(request('search') || !empty(request('tag'))))
-      return Joblisting::select('hashId','role','companyname','jobaddress')->filter(request(['search','tag']))->paginate(6)->appends($request->query());
+      return Joblisting::select('id','role','companyname','jobaddress')->filter(request(['search','tag']))->paginate(6)->appends($request->query());
   }
 }

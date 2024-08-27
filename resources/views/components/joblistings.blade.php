@@ -7,7 +7,7 @@
     
   @foreach($joblistings as $joblisting)
 
-   <article id="jobfulldesc-js" data-job-id="{{$joblisting -> hashId}}" class="group relative flex flex-col p-8 rounded-lg border-2 border-gray-300 hover:cursor-pointer">
+   <article id="jobfulldesc-js" data-job-id="{{$joblisting -> id}}" class="group relative flex flex-col p-8 rounded-lg border-2 border-gray-300 hover:cursor-pointer">
      <i class="absolute right-4 fa-regular fa-bookmark text-blue-900"></i>
      <div class="flex py-8">
       <img class="w-24" src="images/companylogo/company.png">

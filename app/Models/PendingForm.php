@@ -13,7 +13,7 @@ class PendingForm extends Model
 
     public function scopeFilter($query, $filters){
         if(!empty($filters)){
-           $query -> where('hashId','=',$filters);
+           $query -> where('id','=',$filters);
         }
     }
 }
