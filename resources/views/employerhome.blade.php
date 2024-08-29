@@ -1,8 +1,8 @@
 <x-layout>
     <!--parent container-->
-
- <div class="grid grid-cols-[1fr,10fr]">
-        <x-employersidebar/>
+ <div class="flex">
+        <x-employer.employersidebar/>
+        <x-employer.employerlistings :joblistings="$joblistings"/>
   </div>
   
 </x-layout>

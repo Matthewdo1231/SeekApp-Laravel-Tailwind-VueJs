@@ -42,6 +42,8 @@ Route::prefix('employer')->group(function(){
 //Employer index
 Route::get('/employer', [EmployerSiteController::class, 'index']);
 
+Route::get('/employer/listings', [EmployerSiteController::class, 'listings']);
+
 //Listing forms
 Route::get('/employer/create/{form}', [FormController::class, 'create']);
 

@@ -10,7 +10,7 @@
    <article id="jobfulldesc-js" data-job-id="{{$joblisting -> id}}" class="group relative flex flex-col p-8 rounded-lg border-2 border-gray-300 hover:cursor-pointer">
      <i class="absolute right-4 fa-regular fa-bookmark text-blue-900"></i>
      <div class="flex py-8">
-      <img class="w-24" src="images/companylogo/company.png">
+      <img class="w-24" src={{asset('images/companylogo/company.png')}}>
      </div>
      <div class="hover:group font-bold text-gray-700 mb-1 group-hover:underline">{{$joblisting -> role}}</div>
      <div class="text-md text-gray-600 mb-3">{{$joblisting -> companyname}}</div>

@@ -26,6 +26,10 @@ class Joblisting extends Model
         }
       }
 
+   public function scopeByEmployerId($query,$employer_id){
+      $query -> where('employer_id','=', $employer_id);
+   }   
+
    //relation with user  
    public function employer(){
       return $this->belongsTo(Employer::class,'employer_id');
