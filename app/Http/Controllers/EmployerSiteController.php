@@ -14,22 +14,26 @@ class EmployerSiteController extends Controller
 
           return redirect('employer/listings');
         }  
-          return redirect('/employer/login_employer');
+        return self::routeToLoginEmployer();
     }
 
 
     public function listings(){
         if (Auth::guard('employer')->check()) {
-            if (Auth::guard('employer')->check()) {
                 $employer = Auth::guard('employer')->user();
-                $joblistings = Joblisting::select('companyname')->ByEmployerId($employer->id)->get();
-            }
-        return view('employerhome',['joblistings' => $joblistings]);
+                $joblistings = Joblisting::select('companyname','role','created_at')->ByEmployerId($employer->id)->get();
+             return view('employerhome',['joblistings' => $joblistings]);
         } 
-        
+        return self::routeToLoginEmployer();
     }
 
+    public function routeToLoginEmployer(){
+      return redirect('/employer/login_employer');
+    }   
+   
 }
 
+
+ 
 
     

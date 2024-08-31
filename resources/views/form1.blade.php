@@ -4,12 +4,14 @@
 @php 
      if(count($jobinfos)!=0) {
        $jobtitle = $jobinfos[0] -> jobtitle;
+       $role = $jobinfos[0] -> role;
        $companyname = $jobinfos[0]  -> companyname;
        $jobaddress = $jobinfos[0]  -> jobaddress;
        $jobtype = $jobinfos[0]  -> jobtype;
        $niche = $jobinfos[0]  -> niche;
      }
      else{
+      $role = "";
        $jobtitle = "";
        $companyname = "";
        $jobaddress = "";
@@ -34,6 +36,12 @@
         <input data-group="input" id="jobtitle-input" name="jobtitle" value="{{$jobtitle}}" class="mx-48 mt-2 outline-none border-2 rounded-md p-2" placeholder="Edit jobtitle">
         <i data-group="pen" id="jobtitle-edit-js" class="fa-solid fa-pen absolute right-60 bottom-4 text-md hover:cursor-pointer"></i>
      </div>
+
+     <div class="relative flex flex-col">
+      <p class="text-lg mx-48 mt-4">Role</p>
+      <input data-group="input" id="role-input" name="role" value="{{$role}}" class="mx-48 mt-2 outline-none border-2 rounded-md p-2" placeholder="Edit jobtitle">
+      <i data-group="pen" id="role-edit-js" class="fa-solid fa-pen absolute right-60 bottom-4 text-md hover:cursor-pointer"></i>
+   </div>
      
      <div class="relative flex flex-col">
         <p class="text-lg mx-48 mt-4">Company Name</p>

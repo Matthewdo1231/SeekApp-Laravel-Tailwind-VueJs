@@ -27,7 +27,8 @@ class Joblisting extends Model
       }
 
    public function scopeByEmployerId($query,$employer_id){
-      $query -> where('employer_id','=', $employer_id);
+      $query -> where('employer_id','=', $employer_id)
+             -> orWhere('status','=', 'active');
    }   
 
    //relation with user  

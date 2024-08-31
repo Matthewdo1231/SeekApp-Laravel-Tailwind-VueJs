@@ -1,5 +1,4 @@
-
-   <nav class="flex flex-col border-r-[1px] border-gray-400">
+<nav class="flex-2 flex flex-col border-r-[1px] border-gray-400">
 
     <a href="/employer/create/form1" class="relative flex justify-around my-4 mx-2 px-4 border-2 border-blue-400 rounded-lg"> 
         <i class="fa-solid fa-plus absolute text-md left-2 top-[7px] text-blue-500"></i>
@@ -21,9 +20,9 @@
         <span class="ml-1 text-xl text-gray-500">Drafts</span>
     </button>
   
-    <form method="POST" action="/user/logout"> 
+    <form method="POST" action="/user/logout" class="mt-auto"> 
         @csrf
-       <div class="flex mx-6 mt-[44rem] mb-4 group"> 
+       <div class="flex mx-6 mb-4 group"> 
         <i class="fa-solid fa-door-open text-lg pt-1 mr-4 text-gray-600 group-hover:text-red-500"></i>
         <button type="submit" class="block text-lg text-gray-600 group-hover:text-red-500">Logout</button>
        </div> 

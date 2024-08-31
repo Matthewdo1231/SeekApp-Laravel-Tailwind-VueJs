@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('employer_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('hashId')->nullable();
+            $table->string('status')->nullable();
             $table->string('jobtitle')->nullable();
             $table->string('companyname')->nullable();
             $table->string('jobaddress')->nullable();

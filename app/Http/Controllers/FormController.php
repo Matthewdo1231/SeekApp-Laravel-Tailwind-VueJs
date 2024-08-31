@@ -25,10 +25,11 @@ class FormController extends Controller
 
     public function getForm1Info(){ 
         if((Auth::guard('employer')->id())){
-         return PendingForm::select('jobtitle','companyname','requirements','jobaddress','jobtype','niche')->filter(Auth::guard('employer')->id())->get();
+         return PendingForm::select('jobtitle','role','companyname','requirements','jobaddress','jobtype','niche')->filter(Auth::guard('employer')->id())->get();
         }
         else{
             return collect([(object)[
+                'role' => '',
                 'hashId' => null,
                 'jobtitle' => '',
                 'companyname' => '',
@@ -62,6 +63,7 @@ class FormController extends Controller
             if(count(self::getForm1Info()) == 0){
 
             $validatedData = $request -> validate([
+                'role' => '',
                 'jobtitle' => 'required',
                 'companyname' => 'required',
                 'jobaddress' => 'required',
@@ -100,11 +102,12 @@ class FormController extends Controller
 
 
         //If request -> header 'button; is equals to  'publish button' then send to joblisting db
-            $data = PendingForm::select('jobtitle','companyname','requirements','jobaddress','jobtype','niche','about','aboutRole','requirements','benefits')->
+            $data = PendingForm::select('jobtitle','role','companyname','requirements','jobaddress','jobtype','niche','about','aboutRole','requirements','benefits')->
                     filter(Auth::guard('employer')->id())->get();
             
             $joblistingData = [
                 'employer_id'=> Auth::guard('employer')->id(),
+                'role' => $data[0]-> role,
                 'jobtitle' => $data[0]-> jobtitle,
                 'companyname' => $data[0] -> companyname,
                 'jobaddress' => $data[0]-> jobaddress,
@@ -114,6 +117,7 @@ class FormController extends Controller
                 'aboutRole' => $data[0] -> aboutRole,
                 'requirements' => $data[0] -> benefits,
                 'benefits' => $data[0] -> benefits,
+                'status' => 'active',
             ];
 
             Joblisting::create($joblistingData);

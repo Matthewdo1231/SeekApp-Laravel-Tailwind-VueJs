@@ -1,21 +1,75 @@
-<div> 
-  <p class="min-w-[24rem] py-6 pl-6 bg-blue-400 text-white text-xl">
-       Active Listings
-  </p>
-  @if(!empty($joblisting))
-  <div class="flex flex-col items-center gap-2">    
-    @foreach ($joblistings as $joblisting)
-      <article id="jobfulldesc-js" data-job-id="{{$joblisting -> id}}" class="group relative flex flex-col min-w-[24rem] p-4 mt-2 mx-6 border-2 rounded-md border-gray-400 hover:cursor-pointer">
-          <div class="flex py-8">
-          <img class="w-24" src={{asset('images/companylogo/company.png')}}>
-          </div>
-          <div class="hover:group font-bold text-gray-700 mb-1 break-words group-hover:underline"></div>
-          <div class="text-md text-gray-600 mb-3">Role: <span class="text-black font-bold">{{$joblisting -> companyname}}</span></div>
-        </article>
-      @endforeach
+<div class="max-w-[30rem] flex-1 flex flex-col"> 
 
-    @else
-       <div class="ml-4 mt-4 text-gray-400">No active listings</div>
-   @endif
+  <p class="bg-blue-400 text-white font-bold p-4 text-2xl">
+     Jobs
+  </p> 
+  
+  <div class="flex">
+    <button id="active" data-button class="relative flex-1 py-2 text-xl border-b-2 border-blue-400">Active
+      <i class="absolute left-8 bottom-5 text-[10px] text-green-500 fa-solid fa-circle"></i>
+    </button>
+    <button id="inactive" data-button class="relative flex-1 text-xl text-gray-500 border-b-2 opacity-[.5]">InActive
+      <i class="absolute left-6 bottom-5 text-[10px] text-red-500 fa-solid fa-circle"></i>
+    </button>
   </div>
+
+  <ul class="flex px-4 py-2 gap-8">
+    <li class="text-sm text-gray-500">Company logo</li>
+    <li class="text-sm text-gray-500">Company name</li>
+    <li class="text-sm text-gray-500 pr-10">Role</li>
+    <li class="text-sm text-gray-500">Date posted</li>
+  </ul>
+
+  @if(count($joblistings) != 0)
+    @foreach($joblistings as $joblisting)
+       <article class="flex gap-6 border-b-[1px] border-gray-400 py-8 px-4 overflow-hidden">
+        <img class="h-6" src={{asset('images/companylogo/company.png')}}>
+        <p class="text-md truncate w-[6rem] text-center">{{$joblisting->companyname}}</p>
+        <p class="text-md truncate w-[7rem] text-center ">{{$joblisting->role}}</p>
+        <p class="text-md truncate w-[7rem] text-center">{{$joblisting->created_at}}</p>
+       </article>
+
+    @endforeach
+   @else
+    <p class="text-gray-400 p-4">No active joblistings</p>
+  @endif
+ 
 </div> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  let buttons = document.querySelectorAll('[data-button]');
+buttons.forEach(element => {
+   element.addEventListener('click',()=>{
+        untoggleAll();
+        addStyle(element);
+    })
+});
+
+
+
+
+function addStyle(element){
+    element.classList.remove('border-transparent','opacity-[.5]');
+    element.classList.add('border-b-2','border-blue-400');
+}
+
+function untoggleAll(){
+buttons.forEach(element=>{
+  element.classList.add('border-transparent','opacity-[.5]');
+  element.classList.remove('border-blue-400');
+  });
+}
+
+</script>
