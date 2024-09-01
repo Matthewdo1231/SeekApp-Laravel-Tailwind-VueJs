@@ -28,9 +28,19 @@ Route::post('/user/authenticate', [UserController::class, 'authenticate']);
 Route::post('/user/logout', [UserController::class, 'logout']);
 
 
-//Employer Authentication Routes
 
-Route::prefix('employer')->group(function(){
+                 //Employer Routes
+Route::get('/employer', [EmployerSiteController::class, 'index']);
+
+Route::get('/employer/listings', [EmployerSiteController::class, 'listings']);
+//Listing forms
+Route::get('/employer/create/{form}', [FormController::class, 'create']);
+//Store Pending Form
+Route::post('/create', [FormController::class, 'store']);
+
+
+              //Employer Authentication Routes
+    Route::prefix('employer')->group(function(){
     Route::get('/sign-up_employer', [EmployerController::class, 'create']);
     Route::post('/create_employer', [EmployerController::class, 'store']);
     Route::get('/login_employer', [EmployerController::class, 'login']);
@@ -38,21 +48,9 @@ Route::prefix('employer')->group(function(){
     Route::post('/authenticate', [EmployerController::class, 'authenticate']);
     Route::post('/logout', [EmployerController::class, 'logout']);
 
+
 });
+                 //AsyncRoutes
+ //Employer active and inactive listings
+ Route::get('/activeInactive', [EmployerJoblistingController::class,'getJobs']);
 
-
-//Employer index
-Route::get('/employer', [EmployerSiteController::class, 'index']);
-
-Route::get('/employer/listings', [EmployerSiteController::class, 'listings']);
-
-//Listing forms
-Route::get('/employer/create/{form}', [FormController::class, 'create']);
-
-//Store Pending Form
-Route::post('/create', [FormController::class, 'store']);
-
-
-Route::middleware([AuthenticateWithToken::class])->group(function () {
-    Route::get('/listings', [EmployerJoblistingController::class,'getActiveJobs']);
-});

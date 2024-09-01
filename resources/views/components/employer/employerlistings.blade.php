@@ -47,11 +47,10 @@
  buttonsElem.forEach(element => {
     element.addEventListener('click',()=>{
         let status = element.getAttribute("id");
-        fetch('/listings',{
+        fetch('/activeInactive',{
           method:'GET',
           headers:{
            'jobstatus': status,
-           'token':getCookie('token')
           }
         }).then(response => response.text())
           .then(data => console.log(data))
@@ -81,15 +80,6 @@ buttonsElem.forEach(element=>{
   element.classList.add('border-transparent','opacity-[.5]');
   element.classList.remove('border-blue-400');
   });
-}
-
-
-//extract cookie 
-
-function getCookie(name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(";").shift();
 }
 
 
