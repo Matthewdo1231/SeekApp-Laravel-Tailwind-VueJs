@@ -1,11 +1,13 @@
 <?php
 
-use App\Http\Controllers\EmployerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EmployerController;
 use App\Http\Controllers\JoblistingController;
+use App\Http\Middleware\AuthenticateWithToken;
 use App\Http\Controllers\EmployerSiteController;
+use App\Http\Controllers\EmployerJoblistingController;
 
 //Seeker index
 Route::get('/', [JoblistingController::class, 'index']);
@@ -50,3 +52,7 @@ Route::get('/employer/create/{form}', [FormController::class, 'create']);
 //Store Pending Form
 Route::post('/create', [FormController::class, 'store']);
 
+
+Route::middleware([AuthenticateWithToken::class])->group(function () {
+    Route::get('/listings', [EmployerJoblistingController::class,'getActiveJobs']);
+});

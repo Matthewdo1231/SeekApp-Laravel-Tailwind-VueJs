@@ -40,11 +40,21 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-    'employer' => [
+
+        'api' => [
+            'driver' => 'token',
+            'provider' => 'users',
+        ],
+    
+        'employer' => [
             'driver' => 'session',
             'provider' => 'employers',
         ],
     ],
+
+    
+
+
 
     /*
     |--------------------------------------------------------------------------

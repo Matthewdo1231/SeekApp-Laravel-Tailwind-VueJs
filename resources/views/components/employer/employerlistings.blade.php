@@ -24,7 +24,7 @@
     @foreach($joblistings as $joblisting)
        <article class="flex gap-6 border-b-[1px] border-gray-400 py-8 px-4 overflow-hidden">
         <img class="h-6" src={{asset('images/companylogo/company.png')}}>
-        <p class="text-md truncate w-[6rem] text-center">{{$joblisting->companyname}}</p>
+        <p class="text-md truncate w-[6rem] text-center" value="wtf">{{$joblisting->companyname}}</p>
         <p class="text-md truncate w-[7rem] text-center ">{{$joblisting->role}}</p>
         <p class="text-md truncate w-[7rem] text-center">{{$joblisting->created_at}}</p>
        </article>
@@ -37,27 +37,38 @@
 </div> 
 
 
-
-
-
-
-
-
-
-
-
-
-
 <script>
-  let buttons = document.querySelectorAll('[data-button]');
-buttons.forEach(element => {
+  let buttonsElem = document.querySelectorAll('[data-button]');
+  let joblistingElem = document.querySelectorAll
+
+
+
+//Dynamically fetch active and inactive listings
+ buttonsElem.forEach(element => {
+    element.addEventListener('click',()=>{
+        let status = element.getAttribute("id");
+        fetch('/listings',{
+          method:'GET',
+          headers:{
+           'jobstatus': status,
+           'token':getCookie('token')
+          }
+        }).then(response => response.text())
+          .then(data => console.log(data))
+    })
+      
+ })
+
+
+
+
+// Active and Inactive cuztomization
+buttonsElem.forEach(element => {
    element.addEventListener('click',()=>{
         untoggleAll();
         addStyle(element);
     })
 });
-
-
 
 
 function addStyle(element){
@@ -66,10 +77,21 @@ function addStyle(element){
 }
 
 function untoggleAll(){
-buttons.forEach(element=>{
+buttonsElem.forEach(element=>{
   element.classList.add('border-transparent','opacity-[.5]');
   element.classList.remove('border-blue-400');
   });
 }
+
+
+//extract cookie 
+
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(";").shift();
+}
+
+
 
 </script>

@@ -10,12 +10,12 @@ class JoblistingController extends Controller
   
     public function index(Request $request){
       return view('homepage',[
-      'joblistings' =>self::getSearchJobs($request),
-      'joblistingFullDesc' => self::getFullJobDesc(),
+      'joblistings' =>$this->getSearchJobs($request),
+      'joblistingFullDesc' => $this->getFullJobDesc(),
       ]);
   }
  
-  public static function getFullJobDesc(){
+  public function getFullJobDesc(){
     if(!empty(request('id'))){
       return Joblisting::select('*')->filter(request(['id']))->get();
     }  
@@ -24,7 +24,7 @@ class JoblistingController extends Controller
     }
   } 
 
-  public static function getSearchJobs($request){
+  public function getSearchJobs($request){
      if(!empty(request('search') || !empty(request('tag'))))
       return Joblisting::select('id','role','companyname','jobaddress')->filter(request(['search','tag']))->paginate(6)->appends($request->query());
   }
