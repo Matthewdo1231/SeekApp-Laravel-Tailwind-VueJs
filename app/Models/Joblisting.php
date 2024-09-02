@@ -26,9 +26,20 @@ class Joblisting extends Model
         }
       }
 
-   public function scopeByEmployerId($query,$employer_id){
-      $query -> where('employer_id','=', $employer_id)
-             -> orWhere('status','=', 'active');
+   public function scopeByEmployerId($query,$employer_id,$status){
+        if($status == 'active'){
+         $query -> where('employer_id','=', $employer_id)
+                -> orWhere('status','=', 'active');
+        }
+        else if($status == 'inactive'){
+         $query -> where('employer_id','=', $employer_id)
+                -> where('status','=', 'inactive');
+        }
+        else{
+         $query -> where('employer_id','=', $employer_id)
+                -> orWhere('status','=', 'active');
+        }
+
    }   
 
    //relation with user  
