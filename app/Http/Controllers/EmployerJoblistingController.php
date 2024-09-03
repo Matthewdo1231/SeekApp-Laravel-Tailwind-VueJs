@@ -15,11 +15,12 @@ class EmployerJoblistingController extends Controller
 {
      public function getJobs(Request $request){   
        if(Auth::guard('employer')->check()){
-           
+         //pages offset
+         $offset = $request -> header('offset');
          if($request->header('jobstatus') == 'active'){
             $status = 'active';
             $employer = Auth::guard('employer')-> user();
-            return $joblistings = Joblisting::select('companyname','role','created_at')->ByEmployerId($employer->id,$status)->paginate(8);
+            return Joblisting::select('companyname','role','created_at')->ByEmployerId($employer->id,$status)->skip($offset)->take(8)->paginate();
          }
          else if($request->header('jobstatus') == 'inactive'){
             $status = 'inactive';

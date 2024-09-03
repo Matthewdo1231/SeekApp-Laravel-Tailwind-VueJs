@@ -27,7 +27,7 @@ class EmployerSiteController extends Controller
         $employer = Auth::guard('employer')->user();
         $joblisting = Joblisting::select('companyname', 'role', 'created_at')
             ->ByEmployerId($employer->id, null)
-            ->paginate(8);
+            ->skip(0)->take(8)->get();
         return view('employerhome', ['joblistings' => $joblisting]);
       }
     }

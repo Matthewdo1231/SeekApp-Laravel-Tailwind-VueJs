@@ -40,15 +40,14 @@
   let buttonsElem = document.querySelectorAll('[data-button]');
   let joblistingElem = document.querySelectorAll
 
-//Dynamically fetch active and inactive listings
+//Dynamically fetch active and inactive when button is pressed listings
+function fetchlistings(offset){
  buttonsElem.forEach(element => {
     element.addEventListener('click',()=>{
         let status = element.getAttribute("id");
-
          //clears the column 
          let allListingsElem = document.getElementById('all-listings');
          allListingsElem.innerHTML = ''; 
-
         fetch('/activeInactive',{
           method:'GET',
           headers:{
@@ -58,6 +57,26 @@
           .then(joblistings => renderData(joblistings))
     })
       
+ })
+}
+
+
+ let allListingsElem = document.getElementById('all-listings');
+
+ //Fetch more listing after scrolled by user
+ allListingsElem.addEventListener('scroll',()=>{
+     let offset = 8;
+     let scroll = allListingsElem.scrollTop;
+      if(allListingsElem.scrollTop + allListingsElem.clientHeight >= allListingsElem.scrollHeight){
+        fetch('/activeInactive',{
+          method:'GET',
+          headers:{
+           'jobstatus': 'active',
+            'offset': offset,
+          }
+        }).then(response => response.json())  
+          .then(joblistings => renderData(joblistings))
+      }
  })
 
 
@@ -102,8 +121,7 @@ buttonsElem.forEach(element=>{
   });
 }
 
-//format date 
-
+//format the date in us
 function formatDate(created_at){
      let d = created_at.split('T');
      d = d[0].split('-');
