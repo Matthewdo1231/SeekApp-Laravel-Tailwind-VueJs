@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
 use App\Models\Employer;
 use App\Models\Joblisting;
-use Illuminate\Http\Request;
+use Illuminate\Http\Request;  
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
 
 
 class EmployerSiteController extends Controller
@@ -20,21 +21,25 @@ class EmployerSiteController extends Controller
         return self::routeToLoginEmployer();
     }
 
-
+ 
     public function listings(Request $request){
-        if (Auth::guard('employer')->check()) {
-          $employer = Auth::guard('employer')->user(); 
-          $joblistings = Joblisting::select('companyname','role','created_at')->ByEmployerId($employer->id,null)->paginate(8);
-            return view('employerhome',['joblistings' => $joblistings]);
-        } 
-        return self::routeToLoginEmployer();
+      if (Auth::guard('employer')->check()) {
+        $employer = Auth::guard('employer')->user();
+        $joblisting = Joblisting::select('companyname', 'role', 'created_at')
+            ->ByEmployerId($employer->id, null)
+            ->paginate(8);
+        return view('employerhome', ['joblistings' => $joblisting]);
+      }
     }
 
     public function routeToLoginEmployer(){
       return redirect('/employer/login_employer');
-    }   
-   
+    } 
+
+
+ 
 }
+
 
 
  

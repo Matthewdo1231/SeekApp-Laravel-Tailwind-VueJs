@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Joblisting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +19,7 @@ class EmployerJoblistingController extends Controller
          if($request->header('jobstatus') == 'active'){
             $status = 'active';
             $employer = Auth::guard('employer')-> user();
-            return Joblisting::select('companyname','role','created_at')->ByEmployerId($employer->id,$status)->paginate(8);
+            return $joblistings = Joblisting::select('companyname','role','created_at')->ByEmployerId($employer->id,$status)->paginate(8);
          }
          else if($request->header('jobstatus') == 'inactive'){
             $status = 'inactive';

@@ -25,7 +25,7 @@
           <img class="h-6" src={{asset('images/companylogo/company.png')}}>
           <p class="text-md truncate w-[6rem] text-center" value="wtf">{{$joblisting->companyname}}</p>
           <p class="text-md truncate w-[7rem] text-center ">{{$joblisting->role}}</p>
-          <p class="text-md truncate w-[7rem] text-center">{{$joblisting->created_at}}</p>
+          <p class="text-md truncate w-[7rem] text-center">{{$joblisting->created_at->format('M j, Y')}}</p>
         </article>
       @endforeach
     </div> 
@@ -69,12 +69,13 @@ function renderData(joblistings){
      allListingsElem.innerHTML = '<p class="text-gray-400 p-4">No inactive joblistings</p>'; 
    }
    joblistings.data.map((job)=>{
+      let date = formatDate(job.created_at);
       let html = 
       `<article class="flex gap-6 border-b-[1px] border-gray-400 py-8 px-4 overflow-hidden">
         <img class="h-6" src={{asset('images/companylogo/company.png')}}>
         <p class="text-md truncate w-[6rem] text-center" value="wtf">${job.companyname}</p>
         <p class="text-md truncate w-[7rem] text-center ">${job.role}</p>
-        <p class="text-md truncate w-[7rem] text-center">${job.created_at}</p>
+        <p class="text-md truncate w-[7rem] text-center">${date}</p>
        </article>`;
        allListingsElem.innerHTML += html;
    })
@@ -100,5 +101,19 @@ buttonsElem.forEach(element=>{
   element.classList.remove('border-blue-400');
   });
 }
+
+//format date 
+
+function formatDate(created_at){
+     let d = created_at.split('T');
+     d = d[0].split('-');
+    const date = new Date(d);
+    const formattedDate = date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+      return formattedDate;
+    }
 
 </script>
