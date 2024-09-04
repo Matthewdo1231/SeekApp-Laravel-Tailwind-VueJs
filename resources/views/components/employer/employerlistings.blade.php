@@ -30,24 +30,24 @@
       @endforeach
     </div> 
    @else
-    <p class="text-gray-400 p-4">No active joblistings</p>
+    <p class="text-gray-400 p-4">End of results</p>
   @endif
- 
 </div> 
 
 
 <script>
   let buttonsElem = document.querySelectorAll('[data-button]');
+  let endresultElem = document.getElementById('endresult');
   let joblistingElem = document.querySelectorAll
+  let offset = 0;
 
 //Dynamically fetch active and inactive when button is pressed listings
-function fetchlistings(offset){
  buttonsElem.forEach(element => {
     element.addEventListener('click',()=>{
         let status = element.getAttribute("id");
          //clears the column 
          let allListingsElem = document.getElementById('all-listings');
-         allListingsElem.innerHTML = ''; 
+         allListingsElem.innerHTML = '';     
         fetch('/activeInactive',{
           method:'GET',
           headers:{
@@ -58,16 +58,15 @@ function fetchlistings(offset){
     })
       
  })
-}
 
 
  let allListingsElem = document.getElementById('all-listings');
 
  //Fetch more listing after scrolled by user
  allListingsElem.addEventListener('scroll',()=>{
-     let offset = 8;
      let scroll = allListingsElem.scrollTop;
       if(allListingsElem.scrollTop + allListingsElem.clientHeight >= allListingsElem.scrollHeight){
+        offset += 8;
         fetch('/activeInactive',{
           method:'GET',
           headers:{
@@ -84,10 +83,14 @@ function fetchlistings(offset){
 function renderData(joblistings){
   let allListingsElem = document.getElementById('all-listings');
   //checks if data fetch is empty
-   if((joblistings.data.length)=== 0){
-     allListingsElem.innerHTML = '<p class="text-gray-400 p-4">No inactive joblistings</p>'; 
+   if((joblistings.length)=== 0){ 
+    allListingsElem.innerHTML +=  `<p id="endresult" class="text-gray-400 p-4">End of result</p>`;
+       //clear duplicate endResultElement
+       if((document.querySelectorAll('#endresult').length) > 1){
+          console.log(document.querySelectorAll('#endresult')[1].remove());
+       }
    }
-   joblistings.data.map((job)=>{
+   joblistings.map((job)=>{
       let date = formatDate(job.created_at);
       let html = 
       `<article class="flex gap-6 border-b-[1px] border-gray-400 py-8 px-4 overflow-hidden">
