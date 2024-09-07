@@ -21,7 +21,7 @@
   <div id="all-listings" class="overflow-auto h-[44rem]">
     @if(count($joblistings) != 0)
       @foreach($joblistings as $joblisting)
-        <article class="flex gap-6 border-b-[1px] border-gray-400 py-8 px-4 overflow-hidden">
+        <article data-joblistings class="flex gap-6 border-b-[1px] border-gray-400 py-8 px-4 overflow-hidden">
           <img class="h-6" src={{asset('images/companylogo/company.png')}}>
           <p class="text-md truncate w-[6rem] text-center" value="wtf">{{$joblisting->companyname}}</p>
           <p class="text-md truncate w-[7rem] text-center ">{{$joblisting->role}}</p>
@@ -38,7 +38,7 @@
 <script>
   let buttonsElem = document.querySelectorAll('[data-button]');
   let endresultElem = document.getElementById('endresult');
-  let joblistingElem = document.querySelectorAll
+  let allListingsElem = document.getElementById('all-listings');
   let offset = 0;
 
 //Dynamically fetch active and inactive when button is pressed listings
@@ -46,7 +46,6 @@
     element.addEventListener('click',()=>{
         let status = element.getAttribute("id");
          //clears the column 
-         let allListingsElem = document.getElementById('all-listings');
          allListingsElem.innerHTML = '';     
         fetch('/activeInactive',{
           method:'GET',
@@ -59,8 +58,6 @@
       
  })
 
-
- let allListingsElem = document.getElementById('all-listings');
 
  //Fetch more listing after scrolled by user
  allListingsElem.addEventListener('scroll',()=>{
@@ -78,22 +75,18 @@
       }
  })
 
-
   //Render fetched data
 function renderData(joblistings){
-  let allListingsElem = document.getElementById('all-listings');
   //checks if data fetch is empty
    if((joblistings.length)=== 0){ 
     allListingsElem.innerHTML +=  `<p id="endresult" class="text-gray-400 p-4">End of result</p>`;
        //clear duplicate endResultElement
-       if((document.querySelectorAll('#endresult').length) > 1){
-          console.log(document.querySelectorAll('#endresult')[1].remove());
-       }
+       checkDuplicate();
    }
    joblistings.map((job)=>{
       let date = formatDate(job.created_at);
       let html = 
-      `<article class="flex gap-6 border-b-[1px] border-gray-400 py-8 px-4 overflow-hidden">
+      `<article data-joblistings class="flex gap-6 border-b-[1px] border-gray-400 py-8 px-4 overflow-hidden">
         <img class="h-6" src={{asset('images/companylogo/company.png')}}>
         <p class="text-md truncate w-[6rem] text-center" value="wtf">${job.companyname}</p>
         <p class="text-md truncate w-[7rem] text-center ">${job.role}</p>
@@ -101,6 +94,24 @@ function renderData(joblistings){
        </article>`;
        allListingsElem.innerHTML += html;
    })
+   checkCount();
+}
+//check joblistings count if less than 8 and add endresult
+function checkCount(){
+  let joblistingElem = document.querySelectorAll('[data-joblistings]');
+  if(joblistingElem.length < 8){
+    allListingsElem.innerHTML += `<p id="endresult" class="text-gray-400 p-4">End of result</p>`;
+    checkDuplicate();
+    offset = 0;
+  }
+ 
+}
+
+  //clear duplicate endResultElement
+function checkDuplicate(){
+  if((document.querySelectorAll('#endresult').length) > 1){
+       document.querySelectorAll('#endresult')[1].remove();
+    }
 }
 
  // Active and Inactive cuztomization
