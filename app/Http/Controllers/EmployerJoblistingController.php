@@ -20,12 +20,12 @@ class EmployerJoblistingController extends Controller
          if($request->header('jobstatus') == 'active'){
             $status = 'active';
             $employer = Auth::guard('employer')-> user();
-            return Joblisting::select('companyname','role','created_at')->ByEmployerId($employer->id,$status)->skip($offset)->take(8)->get();
+            return Joblisting::select('id','companyname','role','created_at')->ByEmployerId($employer->id,$status)->skip($offset)->take(8)->get();
          }
          else if($request->header('jobstatus') == 'inactive'){
             $status = 'inactive';
             $employer = Auth::guard('employer')-> user();
-            return Joblisting::select('companyname','role','created_at')->ByEmployerId($employer->id,$status)->skip($offset)->take(8)->get();
+            return Joblisting::select('id','companyname','role','created_at')->ByEmployerId($employer->id,$status)->skip($offset)->take(8)->get();
          }
         }
    }

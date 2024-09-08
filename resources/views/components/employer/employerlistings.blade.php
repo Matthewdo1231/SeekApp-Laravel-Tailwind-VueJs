@@ -21,12 +21,7 @@
   <div id="all-listings" class="overflow-auto h-[44rem]">
     @if(count($joblistings) != 0)
       @foreach($joblistings as $joblisting)
-        <article data-joblistings class="flex gap-6 border-b-[1px] border-gray-400 py-8 px-4 overflow-hidden">
-          <img class="h-6" src={{asset('images/companylogo/company.png')}}>
-          <p class="text-md truncate w-[6rem] text-center" value="wtf">{{$joblisting->companyname}}</p>
-          <p class="text-md truncate w-[7rem] text-center ">{{$joblisting->role}}</p>
-          <p class="text-md truncate w-[7rem] text-center">{{$joblisting->created_at->format('M j, Y')}}</p>
-        </article>
+        <x-employer.employerlistingscolumn :joblisting="$joblisting"/>
       @endforeach
     </div> 
    @else
@@ -40,6 +35,7 @@
   let endresultElem = document.getElementById('endresult');
   let allListingsElem = document.getElementById('all-listings');
   let offset = 0;
+  let maxResult = false;
 
 //Dynamically fetch active and inactive when button is pressed listings
  buttonsElem.forEach(element => {
@@ -55,7 +51,6 @@
         }).then(response => response.json())  
           .then(joblistings => renderData(joblistings))
     })
-      
  })
 
 
@@ -63,15 +58,17 @@
  allListingsElem.addEventListener('scroll',()=>{
      let scroll = allListingsElem.scrollTop;
       if(allListingsElem.scrollTop + allListingsElem.clientHeight >= allListingsElem.scrollHeight){
-        offset += 8;
-        fetch('/activeInactive',{
-          method:'GET',
-          headers:{
-           'jobstatus': 'active',
-            'offset': offset,
+        if(!maxResult){
+          offset += 8;
+          fetch('/activeInactive',{
+            method:'GET',
+            headers:{
+            'jobstatus': 'active',
+              'offset': offset,
+            }
+          }).then(response => response.json())  
+            .then(joblistings => renderData(joblistings))
           }
-        }).then(response => response.json())  
-          .then(joblistings => renderData(joblistings))
       }
  })
 
@@ -86,20 +83,27 @@ function renderData(joblistings){
    joblistings.map((job)=>{
       let date = formatDate(job.created_at);
       let html = 
-      `<article data-joblistings class="flex gap-6 border-b-[1px] border-gray-400 py-8 px-4 overflow-hidden">
+      `<article data-joblisting-id="${job.id}" id="joblisting-column" class="relative flex gap-6 border-b-[1px] border-gray-400 py-10 px-4 overflow-hidden shadow-md shadow-gray hover:cursor-pointer">
         <img class="h-6" src={{asset('images/companylogo/company.png')}}>
-        <p class="text-md truncate w-[6rem] text-center" value="wtf">${job.companyname}</p>
-        <p class="text-md truncate w-[7rem] text-center ">${job.role}</p>
-        <p class="text-md truncate w-[7rem] text-center">${date}</p>
-       </article>`;
+        <p class="text-md truncate w-[6rem] text-center" value="wtf">{{$joblisting->companyname}}</p>
+        <p class="text-md truncate w-[7rem] text-center ">{{$joblisting->role}}</p>
+        <p class="text-md truncate w-[7rem] text-center">{{$joblisting->created_at->format('M j, Y')}}</p>
+      <ul data-joblisting-action="${job.id}" id="listing-action" class="hidden absolute bottom-1 left-10 gap-5 p-2">
+          <i class="fa-regular fa-file text-gray-500 hover:text-gray-700"><span class="p-2 text-sm font-sans">Move to drafts</span></i>
+          <i class="fa-regular fa-circle-pause text-gray-500 hover:text-gray-700"><span class="p-2 text-sm font-sans">Pause listings</span></i>
+          <i class="fa-solid fa-trash text-red-500 hover:text-red-600"><span class="p-2 text-sm font-sans">Delete</span></i>
+        </ul>
+   </article>`;
        allListingsElem.innerHTML += html;
    })
    checkCount();
+   showActionRow()
 }
 //check joblistings count if less than 8 and add endresult
 function checkCount(){
   let joblistingElem = document.querySelectorAll('[data-joblistings]');
   if(joblistingElem.length < 8){
+    maxResult = true;
     allListingsElem.innerHTML += `<p id="endresult" class="text-gray-400 p-4">End of result</p>`;
     checkDuplicate();
     offset = 0;

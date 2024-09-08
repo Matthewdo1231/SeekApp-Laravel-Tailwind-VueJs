@@ -25,7 +25,7 @@ class EmployerSiteController extends Controller
     public function listings(Request $request){
       if (Auth::guard('employer')->check()) {
         $employer = Auth::guard('employer')->user();
-        $joblisting = Joblisting::select('companyname', 'role', 'created_at')
+        $joblisting = Joblisting::select('id','companyname', 'role', 'created_at')
             ->ByEmployerId($employer->id, null)
             ->skip(0)->take(8)->get();
         return view('employerhome', ['joblistings' => $joblisting]);
