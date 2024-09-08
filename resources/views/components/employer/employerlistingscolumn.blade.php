@@ -13,15 +13,15 @@
 
 <script>
    
-   //add actions to each listing
-   showActionRow();
+  //add actions to each listing
+  showActionRow();
 
  function showActionRow(){
      //show every listing action row in each joblistings container
    let listingColumnElem = document.querySelectorAll('#joblisting-column');
-   console.log(listingColumnElem)
    listingColumnElem.forEach(element => {
-       element.addEventListener('mouseover',()=>{
+       element.addEventListener('mouseover',(event)=>{
+          event.stopPropagation();
           let listing = document.querySelector(`[data-joblisting-action='${element.dataset.joblistingId}']`);
           hideAllActionColumn();
           listing.classList.remove('hidden');
@@ -29,6 +29,11 @@
        })
    });
  }
+
+  //removes actions row after hover outside the listings
+ document.body.addEventListener('mouseover',()=>{
+    hideAllActionColumn();
+  })
  
    function hideAllActionColumn(){
        let allListingActionRow = document.querySelectorAll('[data-joblisting-action]');

@@ -32,124 +32,130 @@
 
 <script>
   let buttonsElem = document.querySelectorAll('[data-button]');
-  let endresultElem = document.getElementById('endresult');
   let allListingsElem = document.getElementById('all-listings');
   let offset = 0;
   let maxResult = false;
+  let currentStatus = 'active'; 
 
-//Dynamically fetch active and inactive when button is pressed listings
- buttonsElem.forEach(element => {
-    element.addEventListener('click',()=>{
-        let status = element.getAttribute("id");
-         //clears the column 
-         allListingsElem.innerHTML = '';     
-        fetch('/activeInactive',{
-          method:'GET',
-          headers:{
-           'jobstatus': status,
-          }
-        }).then(response => response.json())  
-          .then(joblistings => renderData(joblistings))
-    })
- })
-
-
- //Fetch more listing after scrolled by user
- allListingsElem.addEventListener('scroll',()=>{
-     let scroll = allListingsElem.scrollTop;
-      if(allListingsElem.scrollTop + allListingsElem.clientHeight >= allListingsElem.scrollHeight){
-        if(!maxResult){
-          offset += 8;
-          fetch('/activeInactive',{
-            method:'GET',
-            headers:{
-            'jobstatus': 'active',
-              'offset': offset,
-            }
-          }).then(response => response.json())  
-            .then(joblistings => renderData(joblistings))
-          }
+  //// Function to fetch job listings
+  function fetchJobListings(status, offset = 0) {
+    fetch('/activeInactive', {
+      method: 'GET',
+      headers: {
+        'jobstatus': status,
+        'offset': offset
       }
- })
-
-  //Render fetched data
-function renderData(joblistings){
-  //checks if data fetch is empty
-   if((joblistings.length)=== 0){ 
-    allListingsElem.innerHTML +=  `<p id="endresult" class="text-gray-400 p-4">End of result</p>`;
-       //clear duplicate endResultElement
-       checkDuplicate();
-   }
-   joblistings.map((job)=>{
-      let date = formatDate(job.created_at);
-      let html = 
-      `<article data-joblisting-id="${job.id}" id="joblisting-column" class="relative flex gap-6 border-b-[1px] border-gray-400 py-10 px-4 overflow-hidden shadow-md shadow-gray hover:cursor-pointer">
-        <img class="h-6" src={{asset('images/companylogo/company.png')}}>
-        <p class="text-md truncate w-[6rem] text-center" value="wtf">{{$joblisting->companyname}}</p>
-        <p class="text-md truncate w-[7rem] text-center ">{{$joblisting->role}}</p>
-        <p class="text-md truncate w-[7rem] text-center">{{$joblisting->created_at->format('M j, Y')}}</p>
-      <ul data-joblisting-action="${job.id}" id="listing-action" class="hidden absolute bottom-1 left-10 gap-5 p-2">
-          <i class="fa-regular fa-file text-gray-500 hover:text-gray-700"><span class="p-2 text-sm font-sans">Move to drafts</span></i>
-          <i class="fa-regular fa-circle-pause text-gray-500 hover:text-gray-700"><span class="p-2 text-sm font-sans">Pause listings</span></i>
-          <i class="fa-solid fa-trash text-red-500 hover:text-red-600"><span class="p-2 text-sm font-sans">Delete</span></i>
-        </ul>
-   </article>`;
-       allListingsElem.innerHTML += html;
-   })
-   checkCount();
-   showActionRow()
-}
-//check joblistings count if less than 8 and add endresult
-function checkCount(){
-  let joblistingElem = document.querySelectorAll('[data-joblistings]');
-  if(joblistingElem.length < 8){
-    maxResult = true;
-    allListingsElem.innerHTML += `<p id="endresult" class="text-gray-400 p-4">End of result</p>`;
-    checkDuplicate();
-    offset = 0;
+    }).then(response => response.json())
+      .then(joblistings => renderData(joblistings));
   }
- 
-}
 
-  //clear duplicate endResultElement
-function checkDuplicate(){
-  if((document.querySelectorAll('#endresult').length) > 1){
-       document.querySelectorAll('#endresult')[1].remove();
-    }
-}
+  //// Event listeners for buttons
+  buttonsElem.forEach(element => {
+    element.addEventListener('click', () => {
+      let status = element.getAttribute("id");
+      if (status !== currentStatus) {
+        // Reset offset and maxResult when switching status
+        offset = 0;
+        maxResult = false;
+        currentStatus = status;
 
- // Active and Inactive cuztomization
- buttonsElem.forEach(element => {
-   element.addEventListener('click',()=>{
-        untoggleAll();
-        addStyle(element);
-    })
-});
-
-
-function addStyle(element){
-    element.classList.remove('border-transparent','opacity-[.5]');
-    element.classList.add('border-b-2','border-blue-400');
-}
-
-function untoggleAll(){
-buttonsElem.forEach(element=>{
-  element.classList.add('border-transparent','opacity-[.5]');
-  element.classList.remove('border-blue-400');
+        // Clear the current listings and fetch new ones
+        allListingsElem.innerHTML = '';
+        fetchJobListings(status);
+      }
+      // Update button styles
+      untoggleAll();
+      addStyle(element);
+    });
   });
-}
 
-//format the date in us
-function formatDate(created_at){
-     let d = created_at.split('T');
-     d = d[0].split('-');
+  ///// Fetch more listings when scrolling
+  allListingsElem.addEventListener('scroll', () => {
+    if (allListingsElem.scrollTop + allListingsElem.clientHeight >= allListingsElem.scrollHeight) {
+      if (!maxResult) {
+        offset += 8;
+        fetchJobListings(currentStatus, offset);
+      }
+    }
+  });
+
+  ///// Render fetched data
+  function renderData(joblistings) {
+    if (joblistings.length === 0) {
+      if (offset === 0) {
+        // No initial data and end result is shown
+        allListingsElem.innerHTML += '<p id="endresult" class="text-gray-400 p-4">End of results</p>';
+        showActionRow();
+      } else {
+        // Additional end result after scrolling
+        maxResult = true;
+        allListingsElem.innerHTML += '<p id="endresult" class="text-gray-400 p-4">End of results</p>';
+        showActionRow();
+      }
+      checkDuplicate();
+    } else {
+      joblistings.forEach(job => {
+        let date = formatDate(job.created_at);
+        let html = 
+        `<article data-joblisting-id="${job.id}" id="joblisting-column" class="relative flex gap-6 border-b-[1px] border-gray-400 py-10 px-4 overflow-hidden shadow-md shadow-gray hover:cursor-pointer">
+          <img class="h-6" src={{asset('images/companylogo/company.png')}}>
+          <p class="text-md truncate w-[6rem] text-center">${job.companyname}</p>
+          <p class="text-md truncate w-[7rem] text-center">${job.role}</p>
+          <p class="text-md truncate w-[7rem] text-center">${date}</p>
+          <ul data-joblisting-action="${job.id}" id="listing-action" class="hidden absolute bottom-1 left-10 gap-5 p-2">
+              <i class="fa-regular fa-file text-gray-500 hover:text-gray-700"><span class="p-2 text-sm font-sans">Move to drafts</span></i>
+              <i class="fa-regular fa-circle-pause text-gray-500 hover:text-gray-700"><span class="p-2 text-sm font-sans">Pause listings</span></i>
+              <i class="fa-solid fa-trash text-red-500 hover:text-red-600"><span class="p-2 text-sm font-sans">Delete</span></i>
+          </ul>
+        </article>`;
+        allListingsElem.innerHTML += html;
+      });
+      checkCount();
+      showActionRow();
+    }
+  }
+
+  ///// Check job listings count and add end result
+  function checkCount() {
+    let joblistingElem = document.querySelectorAll('#joblisting-column');
+    if (joblistingElem.length < 8) {
+      maxResult = true;
+      allListingsElem.innerHTML += '<p id="endresult" class="text-gray-400 p-4">End of results</p>';
+      checkDuplicate();
+      offset = 0;
+    }
+  }
+
+  ///// Remove duplicate end result elements
+  function checkDuplicate() {
+    if (document.querySelectorAll('#endresult').length > 1) {
+      document.querySelectorAll('#endresult')[1].remove();
+    }
+  }
+
+  //// Add style to the active button
+  function addStyle(element) {
+    element.classList.remove('border-transparent', 'opacity-[.5]');
+    element.classList.add('border-b-2', 'border-blue-400');
+  }
+
+  //// Remove style from all buttons
+  function untoggleAll() {
+    buttonsElem.forEach(element => {
+      element.classList.add('border-transparent', 'opacity-[.5]');
+      element.classList.remove('border-blue-400');
+    });
+  }
+
+  //// Format date in US format
+  function formatDate(created_at) {
+    let d = created_at.split('T')[0].split('-');
     const date = new Date(d);
-    const formattedDate = date.toLocaleDateString('en-US', {
+    return date.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
       year: 'numeric'
     });
-      return formattedDate;
-    }
+  }
 
 </script>
