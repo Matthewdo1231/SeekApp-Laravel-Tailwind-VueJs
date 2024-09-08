@@ -46,7 +46,8 @@
         'offset': offset
       }
     }).then(response => response.json())
-      .then(joblistings => renderData(joblistings));
+      .then(joblistings => renderData(joblistings))
+      .then(()=>{showActionRow()})
   }
 
   //// Event listeners for buttons
@@ -111,7 +112,6 @@
         allListingsElem.innerHTML += html;
       });
       checkCount();
-      showActionRow();
     }
   }
 
