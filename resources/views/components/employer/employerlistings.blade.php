@@ -12,7 +12,7 @@
       <i class="absolute left-6 bottom-5 text-[10px] text-red-500 fa-solid fa-circle"></i>
     </button>
   </div>
-  <ul class="flex px-4 py-2 gap-8">
+  <ul class="flex px-4 py-2 gap-8 shadow-sm shadow-gray-500">
     <li class="text-sm text-gray-500">Company logo</li>
     <li class="text-sm text-gray-500">Company name</li>
     <li class="text-sm text-gray-500 pr-10">Role</li>
@@ -31,6 +31,7 @@
 
 
 <script>
+  let asdasd ='asdasd';
   let buttonsElem = document.querySelectorAll('[data-button]');
   let allListingsElem = document.getElementById('all-listings');
   let offset = 0;
@@ -69,6 +70,8 @@
       addStyle(element);
     });
   });
+
+  
 
   ///// Fetch more listings when scrolling
   allListingsElem.addEventListener('scroll', () => {
@@ -158,4 +161,36 @@
     });
   }
 
+   /////////////////////////////////////// For listing interactivity///////////////////////
+   showActionRow();
+
+function showActionRow(){
+    //show every listing action row in each joblistings container
+  let listingColumnElem = document.querySelectorAll('#joblisting-column');
+  listingColumnElem.forEach(element => {
+      element.addEventListener('mouseover',(event)=>{
+         event.stopPropagation();
+         let listing = document.querySelector(`[data-joblisting-action='${element.dataset.joblistingId}']`);
+         hideAllActionColumn();
+         listing.classList.remove('hidden');
+         listing.classList.add('flex');
+      })
+  });
+}
+
+ //removes actions row after hover outside the listings
+document.body.addEventListener('mouseover',()=>{
+   hideAllActionColumn();
+ })
+
+  function hideAllActionColumn(){
+      let allListingActionRow = document.querySelectorAll('[data-joblisting-action]');
+       allListingActionRow.forEach(element =>{
+           element.classList.add('hidden');
+       })
+  }
+
 </script>
+
+
+
