@@ -31,12 +31,12 @@
 
 
 <script>
-  let asdasd ='asdasd';
   let buttonsElem = document.querySelectorAll('[data-button]');
   let allListingsElem = document.getElementById('all-listings');
   let offset = 0;
   let maxResult = false;
   let currentStatus = 'active'; 
+  checkCount();
 
   //// Function to fetch job listings
   function fetchJobListings(status, offset = 0) {
@@ -48,7 +48,7 @@
       }
     }).then(response => response.json())
       .then(joblistings => renderData(joblistings))
-      .then(()=>{showActionRow()})
+      .then(()=>{showActionRow();addActionsListener();})
   }
 
   //// Event listeners for buttons
@@ -76,6 +76,7 @@
   ///// Fetch more listings when scrolling
   allListingsElem.addEventListener('scroll', () => {
     if (allListingsElem.scrollTop + allListingsElem.clientHeight >= allListingsElem.scrollHeight) {
+      addActionsListener();
       if (!maxResult) {
         offset += 8;
         fetchJobListings(currentStatus, offset);
@@ -107,9 +108,9 @@
           <p class="text-md truncate w-[7rem] text-center">${job.role}</p>
           <p class="text-md truncate w-[7rem] text-center">${date}</p>
           <ul data-joblisting-action="${job.id}" id="listing-action" class="hidden absolute bottom-1 left-10 gap-5 p-2">
-              <i class="fa-regular fa-file text-gray-500 hover:text-gray-700"><span class="p-2 text-sm font-sans">Move to drafts</span></i>
-              <i class="fa-regular fa-circle-pause text-gray-500 hover:text-gray-700"><span class="p-2 text-sm font-sans">Pause listings</span></i>
-              <i class="fa-solid fa-trash text-red-500 hover:text-red-600"><span class="p-2 text-sm font-sans">Delete</span></i>
+              <i data-action-draft="${job.id}" class="fa-regular fa-file text-gray-500 hover:text-gray-700"><span class="p-2 text-sm font-sans">Move to drafts</span></i>
+              <i data-action-active="${job.id}" class="fa-regular fa-circle-pause text-gray-500 hover:text-gray-700"><span class="p-2 text-sm font-sans">Pause listings</span></i>
+              <i data-action-delete="${job.id}" class="fa-solid fa-trash text-red-500 hover:text-red-600"><span class="p-2 text-sm font-sans">Delete</span></i>
           </ul>
         </article>`;
         allListingsElem.innerHTML += html;
@@ -161,8 +162,11 @@
     });
   }
 
-   /////////////////////////////////////// For listing interactivity///////////////////////
-   showActionRow();
+</script>
+
+<script>
+  /////////////////////////////////////// For listing interactivity///////////////////////
+  showActionRow();
 
 function showActionRow(){
     //show every listing action row in each joblistings container
@@ -189,6 +193,68 @@ document.body.addEventListener('mouseover',()=>{
            element.classList.add('hidden');
        })
   }
+
+//handle actions listings actions
+
+
+const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+
+addActionsListener();
+
+// add event listener on each actions
+function addActionsListener(){
+
+let actionDraftElem = document.querySelectorAll('[data-action-draft]');
+let actionActiveElem = document.querySelectorAll('[data-action-active]');
+let actionDeleteElem = document.querySelectorAll('[data-action-delete]');
+
+
+
+  //handle draft action
+  actionDraftElem.forEach((element)=>{
+        element.addEventListener('click',()=>{
+            const id = element.dataset.actionDraft;
+            const action = 'drafts'
+            performAction(id,action);
+        })
+    })
+
+    //handle active action 
+    actionActiveElem.forEach((element)=>{
+        element.addEventListener('click',()=>{
+            const id = element.dataset.actionActive;
+            const action = (currentStatus == 'active') ? 'inactive' : 'active';
+            performAction(id,action);
+        })
+    })
+
+    //handle delete action
+    actionDeleteElem.forEach((element)=>{
+        element.addEventListener('click',()=>{
+            const id = element.dataset.actionDelete;
+            const action = 'deleted'
+            performAction(element,id,action);
+        })
+    })
+
+}
+
+
+
+
+//Dynamically perform post action based on click button
+function performAction(id,action){
+  fetch('/performAction',{
+            method:'POST',
+            headers:{
+              'X-Requested-With': 'XMLHttpRequest',
+              'X-CSRF-TOKEN': csrfToken,
+               'id' : id,
+               'action' :action
+            } 
+          }).then(()=> document.querySelector(`[data-joblisting-id="${id}"]`).remove()) 
+}
 
 </script>
 

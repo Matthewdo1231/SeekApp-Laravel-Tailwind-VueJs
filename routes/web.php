@@ -54,3 +54,5 @@ Route::post('/create', [FormController::class, 'store']);
  //Employer active and inactive listings
  Route::get('/activeInactive', [EmployerJoblistingController::class,'getJobs']);
 
+ Route::post('/performAction',[EmployerJoblistingController::class,'performAction']);
+

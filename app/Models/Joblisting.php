@@ -29,7 +29,7 @@ class Joblisting extends Model
    public function scopeByEmployerId($query,$employer_id,$status){
         if($status == 'active'){
          $query -> where('employer_id','=', $employer_id)
-                -> orWhere('status','=', 'active');
+                -> Where('status','=', 'active');
         }
         else if($status == 'inactive'){
          $query -> where('employer_id','=', $employer_id)
@@ -37,10 +37,14 @@ class Joblisting extends Model
         }
         else{
          $query -> where('employer_id','=', $employer_id)
-                -> orWhere('status','=', 'active');
+                -> Where('status','=', 'active');
         }
 
    }   
+
+   public function scopeEmployerIdListings($query,$employer_id){
+      $query -> where('employer_id','=', $employer_id);
+   }
 
    //relation with user  
    public function employer(){
