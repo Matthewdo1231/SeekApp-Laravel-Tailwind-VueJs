@@ -1,4 +1,4 @@
-<div id="listingcolumn" class="max-w-[30rem] flex-1 flex flex-col"> 
+<div id="listingcolumn" class="max-w-[30rem] flex-1 flex flex-col border-r-[1px] border-gray-400"> 
 
   <p class="bg-blue-400 text-white font-bold p-4 text-2xl">
      Jobs
@@ -21,11 +21,9 @@
   <div id="all-listings" class="overflow-auto h-[44rem]">
     @if(count($joblistings) != 0)
       @foreach($joblistings as $joblisting)
-        <x-employer.employerlistingscolumn :joblisting="$joblisting"/>
+        <x-employer.listing :joblisting="$joblisting"/>
       @endforeach
     </div> 
-   @else
-    <p class="text-gray-400 p-4">End of results</p>
   @endif
 </div> 
 
@@ -48,7 +46,7 @@
       }
     }).then(response => response.json())
       .then(joblistings => renderData(joblistings))
-      .then(()=>{showActionRow();addActionsListener();})
+      .then(()=>{showActionRow();addActionsListener();listingOnClick();}) //callbacks
   }
 
   //// Event listeners for buttons
@@ -241,8 +239,6 @@ let actionDeleteElem = document.querySelectorAll('[data-action-delete]');
 }
 
 
-
-
 //Dynamically perform post action based on click button
 function performAction(id,action){
   fetch('/performAction',{
@@ -255,6 +251,31 @@ function performAction(id,action){
             } 
           }).then(()=> document.querySelector(`[data-joblisting-id="${id}"]`).remove()) 
 }
+
+//Listing onclick 
+
+listingOnClick()
+function listingOnClick(){
+ let listings = document.querySelectorAll('[data-joblisting-id]');
+ 
+ listings.forEach((element)=>{
+     element.addEventListener('click',()=>{
+      const id = element.dataset.joblistingId;
+        fetch('/getListingFullDescription',{
+          method:'GET',
+          headers:{
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN': csrfToken,
+            'id' : id,
+           }
+          }
+        ).then(response=>response.text())
+         .then((data) =>document.getElementById('listingDescriptionContainer').innerHTML = data)
+     })
+ })
+}
+
+
 
 </script>
 

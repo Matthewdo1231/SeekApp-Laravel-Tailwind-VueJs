@@ -5,7 +5,6 @@ use App\Http\Controllers\FormController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EmployerController;
 use App\Http\Controllers\JoblistingController;
-use App\Http\Middleware\AuthenticateWithToken;
 use App\Http\Controllers\EmployerSiteController;
 use App\Http\Controllers\EmployerJoblistingController;
 
@@ -50,9 +49,12 @@ Route::post('/create', [FormController::class, 'store']);
 
 
 });
-                 //AsyncRoutes
+                 //Async API
+
  //Employer active and inactive listings
  Route::get('/activeInactive', [EmployerJoblistingController::class,'getJobs']);
-
+//Dynamically perform different actions on each listings
  Route::post('/performAction',[EmployerJoblistingController::class,'performAction']);
+//Fetch listing description
+Route::get('/getListingFullDescription',[EmployerJoblistingController::class,'getListingFullDescription']);
 
