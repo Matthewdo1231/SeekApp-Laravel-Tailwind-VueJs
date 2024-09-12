@@ -4,7 +4,7 @@
         <x-employer.sidebar/>
         <x-employer.listingscolumn :joblistings="$joblistings"/>
         <x-employer.jobfulldescription/>
-        <div class="w-[30rem] bg-red-200"></div>
+        <x-employer.applicantlistcolumn/>
   </div>
  
 </x-layout>
