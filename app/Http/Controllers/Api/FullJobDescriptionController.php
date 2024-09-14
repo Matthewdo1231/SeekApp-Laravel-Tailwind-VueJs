@@ -45,6 +45,8 @@ class FullJobDescriptionController extends Controller
             <ul class="text-2xl mb-6 text-gray-700">Benefits
                 <li class="text-base ml-4 mb-4 text-gray-700">' . nl2br(htmlspecialchars($data->benefits)) . '</li>
             </ul>
-        </section>';
+        </section>
+         
+       ';
     }
 }

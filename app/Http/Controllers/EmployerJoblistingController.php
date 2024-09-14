@@ -70,7 +70,8 @@ class EmployerJoblistingController extends Controller
             return 'Job description not found';
          }
 
-        return '<header>
+        return '
+        <header>
             <h1 class="text-4xl mb-4 font-bold text-gray-700">' . htmlspecialchars($data->role) . '</h1>
             <h2 class="text-2xl mb-4 text-gray-700">' . htmlspecialchars($data->companyname) . '</h2>
             <h3 class="text-base mb-4 text-gray-700"><i class="fa-solid fa-location-dot"></i>&#160;' . htmlspecialchars($data->jobaddress) . '</h3>
@@ -94,7 +95,16 @@ class EmployerJoblistingController extends Controller
             <ul class="text-2xl mb-6 text-gray-700">Benefits
                 <li class="text-base ml-4 mb-4 text-gray-700">' . nl2br(htmlspecialchars($data->benefits)) . '</li>
             </ul>
-        </section>';
+        </section>
+        <button id="edit-button" class="hidden bg-blue-400 text-white rounded-lg p-4">Edit Description
+        <i class="fa-regular fa-pen-to-square"></i></button>
+        
+        <div id="editing-buttons" class="gap-4">
+            <button class="bg-gray-400 hover:bg-gray-300 text-white rounded-lg p-4">Discard Changes
+            <i class="fa-solid fa-xmark"></i></button>
+            <button class="bg-blue-400 hover:bg-blue-300 text-white rounded-lg p-4">Save Changes
+            <i class="fa-regular fa-pen-to-square"></i></button>
+        </div>';
          }
        }  
       }

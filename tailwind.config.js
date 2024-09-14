@@ -21,8 +21,9 @@ export default {
       'phone': '400px', // Custom breakpoint for phones
     },
     extend: {
-      backgroundColor:{
-        "light-gray": "#e1dedd",
+      colors:{
+        "lightgray": "a4e019",
+        "custom-gray":"#98979c",
     },
     },
     fontFamily: {
