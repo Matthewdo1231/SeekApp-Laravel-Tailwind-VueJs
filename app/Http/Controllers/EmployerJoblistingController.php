@@ -72,39 +72,41 @@ class EmployerJoblistingController extends Controller
 
         return '
         <header>
-            <h1 class="text-4xl mb-4 font-bold text-gray-700">' . htmlspecialchars($data->role) . '</h1>
-            <h2 class="text-2xl mb-4 text-gray-700">' . htmlspecialchars($data->companyname) . '</h2>
-            <h3 class="text-base mb-4 text-gray-700"><i class="fa-solid fa-location-dot"></i>&#160;' . htmlspecialchars($data->jobaddress) . '</h3>
-            <h4 class="text-sm mb-4 text-gray-700"><i class="fa-solid fa-building"></i> &#160;Programming/Technology</h4>
-            <h4 class="text-sm mb-4 text-gray-700"><i class="fa-regular fa-clock"></i>&#160;' . htmlspecialchars($data->jobtype) . '</h4>
+            <h1 data-job-editable class="text-4xl mb-4 font-bold text-gray-700">' . htmlspecialchars($data->role) . '</h1>
+            <h2 data-job-editable class="text-2xl mb-4 text-gray-700">' . htmlspecialchars($data->companyname) . '</h2>
+            <h3 data-job-editable class="text-base mb-4 text-gray-700"><i class="fa-solid fa-location-dot"></i>&#160;' . htmlspecialchars($data->jobaddress) . '</h3>
+            <h4 data-job-editable class="text-sm mb-4 text-gray-700"><i class="fa-solid fa-building"></i> &#160;Programming/Technology</h4>
+            <h4 data-job-editable class="text-sm mb-4 text-gray-700"><i class="fa-regular fa-clock"></i>&#160;' . htmlspecialchars($data->jobtype) . '</h4>
         </header>
 
         <section class="w-[500px]">
             <ul class="text-2xl mb-6 text-gray-700">About
-                <li class="text-base ml-4 mb-4 text-gray-700">' . nl2br(htmlspecialchars($data->about)) . '</li>
+                <li data-job-editable class="text-base ml-4 mb-4 text-gray-700">' . nl2br(htmlspecialchars($data->about)) . '</li>
             </ul>
 
             <ul class="text-2xl mb-6 text-gray-700">About the role
-                <li class="text-base ml-4 mb-4 text-gray-700">' . nl2br(htmlspecialchars($data->aboutRole)) . '</li>
+                <li data-job-editable class="text-base ml-4 mb-4 text-gray-700">' . nl2br(htmlspecialchars($data->aboutRole)) . '</li>
             </ul>
 
             <ul class="text-2xl mb-6 text-gray-700">Requirements
-                <li class="text-base ml-4 mb-4 text-gray-700">' . nl2br(htmlspecialchars($data->requirements)) . '</li>
+                <li data-job-editable class="text-base ml-4 mb-4 text-gray-700">' . nl2br(htmlspecialchars($data->requirements)) . '</li>
             </ul>
 
             <ul class="text-2xl mb-6 text-gray-700">Benefits
-                <li class="text-base ml-4 mb-4 text-gray-700">' . nl2br(htmlspecialchars($data->benefits)) . '</li>
+                <li data-job-editable class="text-base ml-4 mb-4 text-gray-700">' . nl2br(htmlspecialchars($data->benefits)) . '</li>
             </ul>
         </section>
-        <button id="edit-button" class="hidden bg-blue-400 text-white rounded-lg p-4">Edit Description
+        <button id="edit-button" class="bg-blue-400 text-white rounded-lg p-4">Edit Description
         <i class="fa-regular fa-pen-to-square"></i></button>
         
-        <div id="editing-buttons" class="gap-4">
-            <button class="bg-gray-400 hover:bg-gray-300 text-white rounded-lg p-4">Discard Changes
+        <div id="editing-buttons" class="hidden gap-4">
+            <button id="discard-button" class="bg-gray-400 hover:bg-gray-300 text-white rounded-lg p-4">Discard Changes
             <i class="fa-solid fa-xmark"></i></button>
-            <button class="bg-blue-400 hover:bg-blue-300 text-white rounded-lg p-4">Save Changes
+            <button id="save-button" class="bg-blue-400 hover:bg-blue-300 text-white rounded-lg p-4">Save Changes
             <i class="fa-regular fa-pen-to-square"></i></button>
-        </div>';
+        </div>
+        ';
+        
          }
        }  
       }

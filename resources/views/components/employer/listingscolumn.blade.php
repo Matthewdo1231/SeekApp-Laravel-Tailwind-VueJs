@@ -257,7 +257,7 @@ function performAction(id,action){
 listingOnClick()
 function listingOnClick(){
  let listings = document.querySelectorAll('[data-joblisting-id]');
- 
+
  listings.forEach((element)=>{
      element.addEventListener('click',()=>{
       const id = element.dataset.joblistingId;
@@ -271,6 +271,7 @@ function listingOnClick(){
           }
         ).then(response=>response.text())
          .then((data) =>document.getElementById('listingDescriptionContainer').innerHTML = data)
+         .then(()=>addEditDescriptionListener())
      })
  })
 }
