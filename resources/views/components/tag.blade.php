@@ -14,7 +14,7 @@
     IsActive = (IsActive === 'tagJobType') ? null : 'tagJobType';
     isVisible = (IsActive === 'tagJobType');"
       class="
-      relative text-sm text-gray-600 py-2 px-10 rounded-md bg-light-gray
+      relative text-sm text-gray-600 py-2 px-10 rounded-md bg-light-gray hover:cursor-pointer
       lg:p-3">Job Type &#x25BE
        <div x-cloak x-show="(IsActive == 'tagJobType' && isVisible)" class="absolute flex flex-col border-2 mt-3 top-10 left-0 z-10">
         @foreach($jobTypes as $jobType)
@@ -27,7 +27,7 @@
     IsActive = (IsActive === 'tagLocation') ? null : 'tagLocation';
     isVisible = (IsActive === 'tagLocation');"
       class="
-      relative text-sm text-gray-600 py-2 px-10 rounded-md bg-light-gray
+      relative text-sm text-gray-600 py-2 px-10 rounded-md bg-light-gray hover:cursor-pointer
       lg:p-3">Location &#x25BE
        <div x-cloak x-show="(IsActive == 'tagLocation' && isVisible) " class="absolute flex flex-col border-2 mt-3 top-10 left-0 z-10">
         @foreach($locations as $location)

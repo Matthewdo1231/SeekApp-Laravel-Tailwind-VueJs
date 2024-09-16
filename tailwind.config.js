@@ -22,7 +22,7 @@ export default {
     },
     extend: {
       colors:{
-        "lightgray": "a4e019",
+        "light-gray": "#D3D3D3",
         "custom-gray":"#98979c",
     },
     },
