@@ -59,24 +59,40 @@ class EmployerJoblistingController extends Controller
 
    }
 
+   public function saveDescriptionChanges(Request $request){
+      $jobId = $request -> header('id');
+      if($this -> checkAuth($jobId)){
+        
+        $data = $request->json()->all();
+
+        JobListing::where('id',$jobId)
+         ->update([
+            'role' => $data['role'],
+            'companyname' => $data['companyname'],
+            'jobaddress' => $data['jobaddress'],
+            'jobtype' =>$data['jobtype'],
+            'about' => $data['about'],
+            'aboutRole' => $data['aboutRole'],
+            'requirements' => $data['requirements'],
+            'benefits' => $data['benefits'],
+         ]);
+      }
+     }
+
    public function getListingFullDescription(Request $request){
       $jobId = $request -> header('id');
-      if(Auth::guard('employer') -> check()){
-       $employer = Auth::guard('employer') -> user();
-       $allListingsId = Joblisting::select('id') -> EmployerIdListings($employer->id) -> pluck('id');
-       if($allListingsId -> contains($jobId)){
+       if($this -> checkAuth($jobId)){
          $data = FullJobDescription::find($jobId);
          if (!$data) {
             return 'Job description not found';
          }
-
         return '
         <header>
             <h1 data-job-editable class="text-4xl mb-4 font-bold text-gray-700">' . htmlspecialchars($data->role) . '</h1>
             <h2 data-job-editable class="text-2xl mb-4 text-gray-700">' . htmlspecialchars($data->companyname) . '</h2>
-            <h3 data-job-editable class="text-base mb-4 text-gray-700"><i class="fa-solid fa-location-dot"></i>&#160;' . htmlspecialchars($data->jobaddress) . '</h3>
-            <h4 data-job-editable class="text-sm mb-4 text-gray-700"><i class="fa-solid fa-building"></i> &#160;Programming/Technology</h4>
-            <h4 data-job-editable class="text-sm mb-4 text-gray-700"><i class="fa-regular fa-clock"></i>&#160;' . htmlspecialchars($data->jobtype) . '</h4>
+            <h3 class="text-base mb-4 text-gray-700"><i class="fa-solid fa-location-dot"></i>&#160;<span data-job-editable>' . htmlspecialchars($data->jobaddress) . '</span></h3>
+            <h4 class="text-sm mb-4 text-gray-700"><i class="fa-solid fa-building"></i> &#160;Programming/Technology</h4>
+            <h4 class="text-sm mb-4 text-gray-700"><i class="fa-regular fa-clock"></i>&#160;<span data-job-editable>' . htmlspecialchars($data->jobtype) . '</span></h4>
         </header>
 
         <section class="w-[500px]">
@@ -108,7 +124,18 @@ class EmployerJoblistingController extends Controller
         ';
         
          }
-       }  
+      }
+
+      public function checkAuth($jobId){
+        if(Auth::guard('employer') -> check()){
+            $employer = Auth::guard('employer') -> user();
+            $allListingsId = Joblisting::select('id') -> EmployerIdListings($employer->id) -> pluck('id');
+            if($allListingsId -> contains($jobId)){
+                return true;
+            }
+            return false;
+        }
+        return false;
       }
       
 }

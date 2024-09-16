@@ -49,12 +49,15 @@ Route::post('/create', [FormController::class, 'store']);
 
 
 });
-                 //Async API
+                 //Asynchronous API
 
  //Employer active and inactive listings
  Route::get('/activeInactive', [EmployerJoblistingController::class,'getJobs']);
 //Dynamically perform different actions on each listings
  Route::post('/performAction',[EmployerJoblistingController::class,'performAction']);
-//Fetch listing description
+//Fetch job listing description
 Route::get('/getListingFullDescription',[EmployerJoblistingController::class,'getListingFullDescription']);
+//Save joblisting changes
+Route::post('/saveDescriptionChanges',[EmployerJoblistingController::class,'saveDescriptionChanges']);
+
 

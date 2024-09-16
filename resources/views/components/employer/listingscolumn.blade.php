@@ -261,6 +261,7 @@ function listingOnClick(){
  listings.forEach((element)=>{
      element.addEventListener('click',()=>{
       const id = element.dataset.joblistingId;
+      currentJobId = id;
         fetch('/getListingFullDescription',{
           method:'GET',
           headers:{

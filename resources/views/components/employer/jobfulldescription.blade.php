@@ -10,6 +10,7 @@
 
 <script>
   let isEditing = false;
+  let currentJobId;
 
   function addEditDescriptionListener(){
     const editButtonElem = document.querySelector('#edit-button');
@@ -31,6 +32,7 @@
     saveButtonElem.addEventListener('click',()=>{
          toggleEditButton(editButtonElem,editingButtonElem);
          addInfoFocus(editableInfo);
+         saveChanges(editableInfo);
     })
   }
 
@@ -60,11 +62,38 @@
         element.removeAttribute('contenteditable', 'true');
         element.classList.remove('outline','outline-[2px]','outline-blue-400');
     });
-  } 
+  }
  } 
 
 
- 
+
+ function saveChanges(editableInfo){
+  let data; 
+  let dataArray =[];
+  editableInfo.forEach(element => {
+    dataArray.push(element.innerHTML);
+  })
+  data ={         
+            role: dataArray[0],
+            companyname: dataArray[1],
+            jobaddress: dataArray[2],
+            jobtype: dataArray[3],
+            about: dataArray[4],
+            aboutRole: dataArray[5],
+            requirements: dataArray[6],
+            benefits: dataArray[7],
+     }
+   console.log(data)  
+       fetch('/saveDescriptionChanges',{
+          method:'POST',
+          headers:{
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN': csrfToken,
+            'id' : currentJobId,
+          },
+          body:JSON.stringify(data)
+       })
+ }
  
 
 </script>
