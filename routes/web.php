@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EmployerController;
+use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\JoblistingController;
 use App\Http\Controllers\EmployerSiteController;
 use App\Http\Controllers\EmployerJoblistingController;
@@ -32,6 +33,9 @@ Route::post('/user/logout', [UserController::class, 'logout']);
 Route::get('/employer', [EmployerSiteController::class, 'index']);
 
 Route::get('/employer/listings', [EmployerSiteController::class, 'listings']);
+
+Route::get('/employer/applicants', [ApplicantController::class, 'applicants']);
+
 //Listing forms
 Route::get('/employer/create/{form}', [FormController::class, 'create']);
 //Store Pending Form

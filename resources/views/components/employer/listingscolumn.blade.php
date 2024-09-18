@@ -23,8 +23,9 @@
       @foreach($joblistings as $joblisting)
         <x-employer.listing :joblisting="$joblisting"/>
       @endforeach
-    </div> 
+    </div>  
   @endif
+  </div>
 </div> 
 
 

@@ -5,15 +5,15 @@
         <span class="ml-4 text-xl text-blue-400">Create new</span>
     </a>
 
-    <button id="listings" class="relative flex justify-around py-2"> 
+    <a id="listings" href="/employer/listings" class="relative flex justify-around py-2"> 
         <i class="fa-solid fa-briefcase absolute text-2xl left-3 top-[10px] text-gray-600"></i>
         <span class="ml-2 text-xl text-gray-500">Listings</span>
-    </button>
+    </a>
   
-    <button class="relative flex justify-around gap-2 py-2"> 
+    <a id="applicants" href="/employer/applicants" class="relative flex justify-around gap-2 py-2"> 
         <i class="fa-solid fa-user-tie absolute text-2xl left-3 text-gray-600"></i>
         <span class="ml-4 text-xl text-gray-500">Applicants</span>
-    </button>
+    </a>
 
     <button class="relative flex justify-around gap-2 py-2"> 
         <i class="fa-solid fa-pen-to-square absolute text-2xl left-3 text-gray-600"></i>
