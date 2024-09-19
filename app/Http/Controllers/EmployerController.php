@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\EmployementStage;
 use App\Models\Employer;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
 
 class EmployerController extends Controller
 {
@@ -26,11 +25,22 @@ class EmployerController extends Controller
             'password' => ['required','min:6'],
         ]);
 
+
         $formFields['password'] = bcrypt($formFields['password']);
 
         $formFields = Employer::create($formFields);
+        
 
         Auth::guard('employer') -> login($formFields);
+
+        //create default employementstage
+        $employer = Auth::guard('employer') -> user();
+        $default = [
+            'employer_id' =>  $employer -> id,
+            'employement_stage' => 'Shortlisted, Initial Interview, Assesment, Final Interview'
+        ];
+        EmployementStage::create($default);
+        
         
         return redirect('/employer');
     }
