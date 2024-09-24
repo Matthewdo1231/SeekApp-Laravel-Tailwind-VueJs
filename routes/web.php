@@ -7,6 +7,7 @@ use App\Http\Controllers\EmployerController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\JoblistingController;
 use App\Http\Controllers\EmployerSiteController;
+use App\Http\Controllers\EmployementStageController;
 use App\Http\Controllers\EmployerJoblistingController;
 
 //Seeker index
@@ -63,5 +64,7 @@ Route::post('/create', [FormController::class, 'store']);
 Route::get('/getListingFullDescription',[EmployerJoblistingController::class,'getListingFullDescription']);
 //Save joblisting changes
 Route::post('/saveDescriptionChanges',[EmployerJoblistingController::class,'saveDescriptionChanges']);
+//confirm new stage
+Route::post('/confirmNewChange',[EmployementStageController::class,'addNewStage']);
 
 
