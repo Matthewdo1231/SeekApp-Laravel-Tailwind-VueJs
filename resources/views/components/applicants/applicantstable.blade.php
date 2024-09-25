@@ -11,6 +11,7 @@
 
      @foreach($stage as $item)
       <button id="active" data-button class="relative flex-1 py-2 text-xl border-b-2 border-blue-400">
+        <i data-remove-button id="{{$item}}" class="fa-solid fa-x text-red-500 hover:bg-gray-200 hover:rounded-full" style="display:none"></i>
         {{$item}}
       </button>
       @endforeach
@@ -26,11 +27,13 @@
 <script>
   const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
    
+  let stageButtonsElem;
+
   renderStages();
 
   //add styles when clicked
   function renderStages(){
-  let stageButtonsElem = document.querySelectorAll('#active');
+  stageButtonsElem = document.querySelectorAll('#active');
 
    stageButtonsElem.forEach(elem => {
      addOpacity(stageButtonsElem);
@@ -61,6 +64,10 @@
       managebuttons.classList.add('hidden')
       managebuttons.classList.remove('flex','flex-col')
       isManageButtonClicked = false;
+      //removes all removeButton
+       document.querySelectorAll('[data-remove-button]').forEach((elem)=>{
+          elem.style.display ="none";
+       })
    }) 
 
    //toggle manage buttons
@@ -121,7 +128,7 @@
    function confirmNewStage(){
      let newStage = document.querySelector('[contenteditable="true"]').innerHTML;
      console.log(newStage)
-     fetch('/confirmNewChange',{
+     fetch('/confirmNewStage',{
       method:'POST',
       headers:{
         'X-Requested-With': 'XMLHttpRequest',
@@ -145,7 +152,27 @@
       </button>`
     renderStages();
    }
-   
 
-
+   renderRemoveButton()
+  function renderRemoveButton(){ 
+    removeButtonElem = document.querySelectorAll('[data-remove-button]')
+    removeStageButton.addEventListener('click',(event)=>{
+      event.stopPropagation();
+      removeButtonElem.forEach((elem)=>{
+        elem.removeAttribute('style');
+        elem.addEventListener('click',()=>{
+          console.log(elem.getAttribute('id'))
+           const stage = elem.getAttribute('id');
+           fetch('/removeSelectedStage',{
+             method:'POST',
+             headers:{
+              'X-Requested-With': 'XMLHttpRequest',
+              'X-CSRF-TOKEN': csrfToken,
+              'selectedStage':stage,
+             }
+           }).then(()=>{elem.parentNode.remove()})
+        })
+      })
+  })
+  }
 </script>

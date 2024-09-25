@@ -54,7 +54,7 @@ Route::post('/create', [FormController::class, 'store']);
 
 
 });
-                 //Asynchronous API
+                 //Asynchronous API for EmployerSide
 
  //Employer active and inactive listings
  Route::get('/activeInactive', [EmployerJoblistingController::class,'getJobs']);
@@ -65,6 +65,9 @@ Route::get('/getListingFullDescription',[EmployerJoblistingController::class,'ge
 //Save joblisting changes
 Route::post('/saveDescriptionChanges',[EmployerJoblistingController::class,'saveDescriptionChanges']);
 //confirm new stage
-Route::post('/confirmNewChange',[EmployementStageController::class,'addNewStage']);
+Route::post('/confirmNewStage',[EmployementStageController::class,'addNewStage']);
+
+Route::post('/removeSelectedStage',[EmployementStageController::class,'removeStage']);
+
 
 

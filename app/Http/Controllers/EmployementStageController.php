@@ -17,4 +17,14 @@ class EmployementStageController extends Controller
             $matchedEmployer  ->save();
         }
     }
+
+    public function removeStage(Request $request){
+        $employer = Auth::guard('employer') -> user();
+        $removeStage = "," . $request -> header('selectedStage');
+        if(Auth::guard('employer')->check()){
+            $matchedEmployer = EmployementStage::where('employer_id',$employer->id)->first();
+            $matchedEmployer->employement_stage = str_replace($removeStage, '', $matchedEmployer->employement_stage);
+            $matchedEmployer->save();
+        }
+    }
 }
