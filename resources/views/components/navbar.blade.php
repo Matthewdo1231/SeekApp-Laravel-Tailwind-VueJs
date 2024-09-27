@@ -11,7 +11,7 @@
           <i class="fa-solid fa-user text-lg md:pt-1 text-gray-500 group-hover:text-orange-500"></i>
           <li class="hidden md:block text-lg text-gray-500 group-hover:text-orange-500">{{Auth::user()->name}}</li>
         </button>
-        <div id="user-dropdown-menu" class="hidden absolute top-16 right-10 md:right-32 z-10 w-[20rem] bg-white rounded-[4px] border-[1px] border-gray-300 shadow-sm">
+        <div id="user-dropdown-menu" class="hidden absolute top-16 right-10 md:right-32 z-10 w-[20rem] bg-white rounded-[4px] border-[1px] border-gray-300 shadow-md">
           <ul class="flex flex-col">
             <i class="absolute z-20 right-10 top-[-18px] md:right-10 text-gray-300 text-md">&#9650</i>
             <p class="font-bold p-4 mb-2 text-gray-700 text-left">{{Auth::user()->email}}</p>
@@ -19,11 +19,10 @@
             <li class="text-gray-700 flex p-6 hover:bg-gray-300 hover:cursor-pointer"><i class="fa-regular fa-bookmark w-8 text-2xl"></i></i>Saved Jobs</li>
           </ul>
         </div>
-        <form method="POST" action="/user/logout" class="group flex gap-4 mr-4 py-8 border-b-2 border-transparent hover:border-orange-500"> 
+        <form method="POST" action="/user/logout" class="group flex gap-4 mr-4 py-8 border-b-2 border-transparent hover:cursor-pointer hover:border-orange-500"> 
           @csrf
-          <i class="fa-solid fa-door-open text-lg md:pt-1 text-gray-500 group-hover:text-orange-500"></i>
-           <button type="submit" class="hidden md:block text-lg text-gray-500 group-hover:text-orange-500">Logout</button>
-         </a>
+          <i class="fa-solid fa-door-open text-lg md:pt-1 text-gray-500 group-hover:text-orange-500 group-hover:cursor-pointer"></i>
+           <button type="submit" class="hidden md:block text-lg text-gray-500 group-hover:text-orange-500 group-hover:cursor-pointer">Logout</button>
         </form>
       @else
       <div class="flex gap-6 mr-4">

@@ -20,6 +20,8 @@ class UserController extends Controller
     public function store(Request $request){
         $formInfos = $request -> validate([
             'name' => ['required','min:6'],
+            'middlename' =>['nullable'],
+            'lastname' => ['required'],
             'email' => ['required',Rule::unique('users','email')],
             'password' => ['required','confirmed','min:6']
         ]);

@@ -12,7 +12,25 @@
               <p class="text-red-500 mx-20">{{$message}}</p>
             @enderror
          </div>
-         
+
+      <div class="flex mx-20">
+         <div class="relative flex flex-col ">
+            <p class="text-lg mt-4">Middle Name <span class="text-gray-400">(optional)<span></p>
+            <input data-group="input" id="middename-input" name="middlename" value="" class="mt-2 outline-none border-2 rounded-md p-2" placeholder="Middle Name">
+            @error('middlename') 
+              <p class="text-red-500 mx-20">{{$message}}</p>
+            @enderror
+         </div>
+
+         <div class="relative flex flex-col">
+            <p class="text-lg mt-4 ml-2">Last Name</p>
+            <input data-group="input" id="lastname-input" name="lastname" value="" class="mt-2 outline-none border-2 rounded-md p-2 w-[12rem] ml-1" placeholder="Last Name">
+            @error('lastname') 
+              <p class="text-red-500">{{$message}}</p>
+            @enderror
+         </div>
+      </div> 
+    
          <div class="relative flex flex-col">
             <p class="text-lg mx-20 mt-4">Email</p>
             <input type="email" data-group="input" id="email-input" name="email" value=""  class="mt-2 mx-20 outline-none border-2 rounded-md p-2" placeholder="Email address">
