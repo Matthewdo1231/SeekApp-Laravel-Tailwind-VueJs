@@ -15,8 +15,11 @@
           <ul class="flex flex-col">
             <i class="absolute z-20 right-10 top-[-18px] md:right-10 text-gray-300 text-md">&#9650</i>
             <p class="font-bold p-4 mb-2 text-gray-700 text-left">{{Auth::user()->email}}</p>
-            <li class="text-gray-700 flex p-6 hover:bg-gray-300 hover:cursor-pointer"><i class="fa-regular fa-newspaper w-8 text-2xl"></i>Profile Settings</li>
-            <li class="text-gray-700 flex p-6 hover:bg-gray-300 hover:cursor-pointer"><i class="fa-regular fa-bookmark w-8 text-2xl"></i></i>Saved Jobs</li>
+            <li onclick="location.href='/user/profile'" class="text-gray-700 flex p-6 hover:bg-gray-300 hover:cursor-pointer">
+                <i class="fa-regular fa-newspaper w-8 text-2xl"></i>
+                Profile Settings
+            </li>
+            <li class="text-gray-700 flex p-6 hover:bg-gray-300 hover:cursor-pointer"><i class="fa-regular fa-bookmark w-8 text-2xl"></i>Saved Jobs</li>
           </ul>
         </div>
         <form method="POST" action="/user/logout" class="group flex gap-4 mr-4 py-8 border-b-2 border-transparent hover:cursor-pointer hover:border-orange-500"> 

@@ -9,6 +9,7 @@ use App\Http\Controllers\JoblistingController;
 use App\Http\Controllers\EmployerSiteController;
 use App\Http\Controllers\EmployementStageController;
 use App\Http\Controllers\EmployerJoblistingController;
+use App\Http\Controllers\UserProfileController;
 
 //Seeker index
 Route::get('/', [JoblistingController::class, 'index']);
@@ -29,6 +30,12 @@ Route::post('/user/authenticate', [UserController::class, 'authenticate']);
 Route::post('/user/logout', [UserController::class, 'logout']);
 
 
+//User Routes 
+Route::prefix('user')->group(function(){
+    Route::get('/profile', [UserProfileController::class, 'profile']);
+});
+
+
 
                  //Employer Routes
 Route::get('/employer', [EmployerSiteController::class, 'index']);
@@ -44,7 +51,7 @@ Route::post('/create', [FormController::class, 'store']);
 
 
               //Employer Authentication Routes
-    Route::prefix('employer')->group(function(){
+  Route::prefix('employer')->group(function(){
     Route::get('/sign-up_employer', [EmployerController::class, 'create']);
     Route::post('/create_employer', [EmployerController::class, 'store']);
     Route::get('/login_employer', [EmployerController::class, 'login']);
